@@ -2671,6 +2671,9 @@
         if (ok) shown++;
       }
       count.textContent = `合計 ${shown} 語`;
+
+      // 🔽 検索実行後にページの先頭に戻す
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     q.addEventListener("input", filter);
