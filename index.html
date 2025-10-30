@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>英単語リスト（縦一列｜先頭一致・固定ヘッダー）</title>
+  <title>英単語リスト（先頭一致・固定ヘッダー）</title>
   <style>
     :root {
       --bg:#0b1220; --card:#111a2b; --text:#e6eef8; --muted:#b6c2d9; --accent:#4f8cff;
@@ -54,8 +54,8 @@
 </head>
 <body>
   <header id="appHeader">
-    <h1>英単語リスト（縦一列｜先頭一致）</h1>
-    <span class="pill muted" id="count">合計 2398 語</span>
+    <h1>英単語リスト（先頭一致・固定ヘッダー）</h1>
+    <span class="pill muted" id="count">合計 2616 語</span>
     <div class="toolbar">
       <input id="q" type="search" placeholder="先頭一致でフィルタ（例: ab）">
       <button id="copyBtn">すべてコピー</button>
@@ -109,6 +109,7 @@
     <div class="item" role="listitem">air</div>
     <div class="item" role="listitem">airplane</div>
     <div class="item" role="listitem">airport</div>
+    <div class="item" role="listitem">Alaska</div>
     <div class="item" role="listitem">Alaskan</div>
     <div class="item" role="listitem">album</div>
     <div class="item" role="listitem">alive</div>
@@ -162,6 +163,7 @@
     <div class="item" role="listitem">Arctic</div>
     <div class="item" role="listitem">are</div>
     <div class="item" role="listitem">area</div>
+    <div class="item" role="listitem">aren&#x27;t</div>
     <div class="item" role="listitem">Argentina</div>
     <div class="item" role="listitem">arm</div>
     <div class="item" role="listitem">armchair</div>
@@ -206,6 +208,8 @@
     <div class="item" role="listitem">awake</div>
     <div class="item" role="listitem">away</div>
     <div class="item" role="listitem">awesome</div>
+    <div class="item" role="listitem">awoke</div>
+    <div class="item" role="listitem">awoken</div>
     <div class="item" role="listitem">Azerbaijan</div>
     <div class="item" role="listitem">baby</div>
     <div class="item" role="listitem">back</div>
@@ -231,6 +235,7 @@
     <div class="item" role="listitem">basketball</div>
     <div class="item" role="listitem">bat</div>
     <div class="item" role="listitem">bath</div>
+    <div class="item" role="listitem">bathroom</div>
     <div class="item" role="listitem">battery</div>
     <div class="item" role="listitem">be</div>
     <div class="item" role="listitem">beach</div>
@@ -238,6 +243,7 @@
     <div class="item" role="listitem">bean</div>
     <div class="item" role="listitem">bear</div>
     <div class="item" role="listitem">beat</div>
+    <div class="item" role="listitem">beaten</div>
     <div class="item" role="listitem">beautiful</div>
     <div class="item" role="listitem">beauty</div>
     <div class="item" role="listitem">became</div>
@@ -247,6 +253,7 @@
     <div class="item" role="listitem">bed</div>
     <div class="item" role="listitem">beef</div>
     <div class="item" role="listitem">beefsteak</div>
+    <div class="item" role="listitem">been</div>
     <div class="item" role="listitem">beer</div>
     <div class="item" role="listitem">beetle</div>
     <div class="item" role="listitem">before</div>
@@ -285,6 +292,7 @@
     <div class="item" role="listitem">black</div>
     <div class="item" role="listitem">blackboard</div>
     <div class="item" role="listitem">blend</div>
+    <div class="item" role="listitem">blew</div>
     <div class="item" role="listitem">blind</div>
     <div class="item" role="listitem">block</div>
     <div class="item" role="listitem">blog</div>
@@ -292,26 +300,29 @@
     <div class="item" role="listitem">blossom</div>
     <div class="item" role="listitem">blossoms</div>
     <div class="item" role="listitem">blow</div>
+    <div class="item" role="listitem">blown</div>
     <div class="item" role="listitem">blue</div>
     <div class="item" role="listitem">boar</div>
     <div class="item" role="listitem">board</div>
     <div class="item" role="listitem">boat</div>
+    <div class="item" role="listitem">Bob</div>
     <div class="item" role="listitem">bodies</div>
     <div class="item" role="listitem">body</div>
     <div class="item" role="listitem">boil</div>
     <div class="item" role="listitem">Bolivia</div>
     <div class="item" role="listitem">bomb</div>
     <div class="item" role="listitem">book</div>
-    <div class="item" role="listitem">books</div>
     <div class="item" role="listitem">bookstore</div>
     <div class="item" role="listitem">boots</div>
     <div class="item" role="listitem">border</div>
+    <div class="item" role="listitem">bore</div>
     <div class="item" role="listitem">bored</div>
     <div class="item" role="listitem">born</div>
     <div class="item" role="listitem">borrow</div>
     <div class="item" role="listitem">Boston</div>
     <div class="item" role="listitem">both</div>
     <div class="item" role="listitem">bother</div>
+    <div class="item" role="listitem">bottle</div>
     <div class="item" role="listitem">bought</div>
     <div class="item" role="listitem">bowl</div>
     <div class="item" role="listitem">box</div>
@@ -324,6 +335,7 @@
     <div class="item" role="listitem">brass</div>
     <div class="item" role="listitem">brave</div>
     <div class="item" role="listitem">Brazil</div>
+    <div class="item" role="listitem">Brazilian</div>
     <div class="item" role="listitem">bread</div>
     <div class="item" role="listitem">break</div>
     <div class="item" role="listitem">breakfast</div>
@@ -343,6 +355,8 @@
     <div class="item" role="listitem">brown</div>
     <div class="item" role="listitem">brush</div>
     <div class="item" role="listitem">brushes</div>
+    <div class="item" role="listitem">Buddha</div>
+    <div class="item" role="listitem">Buddhism</div>
     <div class="item" role="listitem">bug</div>
     <div class="item" role="listitem">build</div>
     <div class="item" role="listitem">building</div>
@@ -350,6 +364,8 @@
     <div class="item" role="listitem">bump</div>
     <div class="item" role="listitem">burden</div>
     <div class="item" role="listitem">burn</div>
+    <div class="item" role="listitem">burned</div>
+    <div class="item" role="listitem">burnt</div>
     <div class="item" role="listitem">bus</div>
     <div class="item" role="listitem">business</div>
     <div class="item" role="listitem">busy</div>
@@ -360,25 +376,30 @@
     <div class="item" role="listitem">by</div>
     <div class="item" role="listitem">bye</div>
     <div class="item" role="listitem">cabbage</div>
+    <div class="item" role="listitem">cafe</div>
     <div class="item" role="listitem">cake</div>
     <div class="item" role="listitem">calendar</div>
+    <div class="item" role="listitem">California</div>
     <div class="item" role="listitem">call</div>
     <div class="item" role="listitem">calligraphy</div>
     <div class="item" role="listitem">calm</div>
     <div class="item" role="listitem">came</div>
     <div class="item" role="listitem">camel</div>
+    <div class="item" role="listitem">camera</div>
     <div class="item" role="listitem">camp</div>
     <div class="item" role="listitem">campaign</div>
     <div class="item" role="listitem">campground</div>
     <div class="item" role="listitem">camping</div>
     <div class="item" role="listitem">can</div>
     <div class="item" role="listitem">Canada</div>
+    <div class="item" role="listitem">Canadian</div>
     <div class="item" role="listitem">canal</div>
     <div class="item" role="listitem">cancer</div>
     <div class="item" role="listitem">candle</div>
     <div class="item" role="listitem">candy</div>
     <div class="item" role="listitem">cannot</div>
     <div class="item" role="listitem">canoe</div>
+    <div class="item" role="listitem">can&#x27;t</div>
     <div class="item" role="listitem">cap</div>
     <div class="item" role="listitem">capital</div>
     <div class="item" role="listitem">captain</div>
@@ -391,6 +412,7 @@
     <div class="item" role="listitem">career</div>
     <div class="item" role="listitem">careful</div>
     <div class="item" role="listitem">carefully</div>
+    <div class="item" role="listitem">caribou</div>
     <div class="item" role="listitem">carpenter</div>
     <div class="item" role="listitem">carpet</div>
     <div class="item" role="listitem">carried</div>
@@ -408,6 +430,7 @@
     <div class="item" role="listitem">caught</div>
     <div class="item" role="listitem">cause</div>
     <div class="item" role="listitem">CD</div>
+    <div class="item" role="listitem">Cebu</div>
     <div class="item" role="listitem">center</div>
     <div class="item" role="listitem">central</div>
     <div class="item" role="listitem">century</div>
@@ -418,12 +441,14 @@
     <div class="item" role="listitem">chain</div>
     <div class="item" role="listitem">chair</div>
     <div class="item" role="listitem">challenge</div>
+    <div class="item" role="listitem">champion</div>
     <div class="item" role="listitem">championship</div>
     <div class="item" role="listitem">chance</div>
     <div class="item" role="listitem">change</div>
     <div class="item" role="listitem">changing</div>
     <div class="item" role="listitem">character</div>
     <div class="item" role="listitem">charge</div>
+    <div class="item" role="listitem">Charlie</div>
     <div class="item" role="listitem">chart</div>
     <div class="item" role="listitem">cheap</div>
     <div class="item" role="listitem">check</div>
@@ -461,7 +486,6 @@
     <div class="item" role="listitem">classmate</div>
     <div class="item" role="listitem">classroom</div>
     <div class="item" role="listitem">clean</div>
-    <div class="item" role="listitem">cleaned</div>
     <div class="item" role="listitem">cleanup</div>
     <div class="item" role="listitem">clearly</div>
     <div class="item" role="listitem">clerk</div>
@@ -511,10 +535,12 @@
     <div class="item" role="listitem">company</div>
     <div class="item" role="listitem">computer</div>
     <div class="item" role="listitem">concern</div>
+    <div class="item" role="listitem">concert</div>
     <div class="item" role="listitem">conclusion</div>
     <div class="item" role="listitem">condition</div>
     <div class="item" role="listitem">conditioner</div>
     <div class="item" role="listitem">conference</div>
+    <div class="item" role="listitem">Congo</div>
     <div class="item" role="listitem">connect</div>
     <div class="item" role="listitem">consumer</div>
     <div class="item" role="listitem">contact</div>
@@ -534,6 +560,8 @@
     <div class="item" role="listitem">corner</div>
     <div class="item" role="listitem">cotton</div>
     <div class="item" role="listitem">could</div>
+    <div class="item" role="listitem">couldn&#x27;t</div>
+    <div class="item" role="listitem">count</div>
     <div class="item" role="listitem">countries</div>
     <div class="item" role="listitem">country</div>
     <div class="item" role="listitem">countryside</div>
@@ -552,6 +580,7 @@
     <div class="item" role="listitem">crazy</div>
     <div class="item" role="listitem">cream</div>
     <div class="item" role="listitem">create</div>
+    <div class="item" role="listitem">creating</div>
     <div class="item" role="listitem">creative</div>
     <div class="item" role="listitem">creativity</div>
     <div class="item" role="listitem">creator</div>
@@ -567,6 +596,7 @@
     <div class="item" role="listitem">cross</div>
     <div class="item" role="listitem">crowd</div>
     <div class="item" role="listitem">crowded</div>
+    <div class="item" role="listitem">cruise</div>
     <div class="item" role="listitem">cry</div>
     <div class="item" role="listitem">cucumber</div>
     <div class="item" role="listitem">cultural</div>
@@ -575,12 +605,16 @@
     <div class="item" role="listitem">curious</div>
     <div class="item" role="listitem">curling</div>
     <div class="item" role="listitem">curry</div>
+    <div class="item" role="listitem">cushion</div>
     <div class="item" role="listitem">custom</div>
     <div class="item" role="listitem">customer</div>
+    <div class="item" role="listitem">custom-made</div>
     <div class="item" role="listitem">cut</div>
     <div class="item" role="listitem">cute</div>
     <div class="item" role="listitem">cutting</div>
     <div class="item" role="listitem">cycling</div>
+    <div class="item" role="listitem">dad</div>
+    <div class="item" role="listitem">daddy</div>
     <div class="item" role="listitem">daifuku</div>
     <div class="item" role="listitem">daily</div>
     <div class="item" role="listitem">dam</div>
@@ -593,6 +627,7 @@
     <div class="item" role="listitem">data</div>
     <div class="item" role="listitem">date</div>
     <div class="item" role="listitem">daughter</div>
+    <div class="item" role="listitem">David</div>
     <div class="item" role="listitem">day</div>
     <div class="item" role="listitem">dead</div>
     <div class="item" role="listitem">dear</div>
@@ -602,6 +637,7 @@
     <div class="item" role="listitem">decide</div>
     <div class="item" role="listitem">deciding</div>
     <div class="item" role="listitem">decision</div>
+    <div class="item" role="listitem">decorate</div>
     <div class="item" role="listitem">decrease</div>
     <div class="item" role="listitem">decreasing</div>
     <div class="item" role="listitem">deep</div>
@@ -620,12 +656,14 @@
     <div class="item" role="listitem">desk</div>
     <div class="item" role="listitem">dessert</div>
     <div class="item" role="listitem">destroy</div>
+    <div class="item" role="listitem">detail</div>
     <div class="item" role="listitem">detective</div>
     <div class="item" role="listitem">develop</div>
     <div class="item" role="listitem">developing</div>
     <div class="item" role="listitem">development</div>
     <div class="item" role="listitem">device</div>
     <div class="item" role="listitem">diamond</div>
+    <div class="item" role="listitem">Diane</div>
     <div class="item" role="listitem">diary</div>
     <div class="item" role="listitem">dictionaries</div>
     <div class="item" role="listitem">dictionary</div>
@@ -653,6 +691,7 @@
     <div class="item" role="listitem">dishes</div>
     <div class="item" role="listitem">dislike</div>
     <div class="item" role="listitem">distribute</div>
+    <div class="item" role="listitem">dive</div>
     <div class="item" role="listitem">diverse</div>
     <div class="item" role="listitem">diversity</div>
     <div class="item" role="listitem">diving</div>
@@ -665,6 +704,7 @@
     <div class="item" role="listitem">doggy</div>
     <div class="item" role="listitem">doing</div>
     <div class="item" role="listitem">doll</div>
+    <div class="item" role="listitem">dollar</div>
     <div class="item" role="listitem">dolphin</div>
     <div class="item" role="listitem">domestic</div>
     <div class="item" role="listitem">donate</div>
@@ -674,13 +714,17 @@
     <div class="item" role="listitem">door</div>
     <div class="item" role="listitem">dot</div>
     <div class="item" role="listitem">down</div>
+    <div class="item" role="listitem">downtown</div>
     <div class="item" role="listitem">dragon</div>
     <div class="item" role="listitem">dragonfly</div>
     <div class="item" role="listitem">drama</div>
     <div class="item" role="listitem">drank</div>
     <div class="item" role="listitem">draw</div>
     <div class="item" role="listitem">drawing</div>
+    <div class="item" role="listitem">drawn</div>
     <div class="item" role="listitem">dream</div>
+    <div class="item" role="listitem">dreamt</div>
+    <div class="item" role="listitem">drew</div>
     <div class="item" role="listitem">drill</div>
     <div class="item" role="listitem">drink</div>
     <div class="item" role="listitem">drive</div>
@@ -726,6 +770,7 @@
     <div class="item" role="listitem">eighteenth</div>
     <div class="item" role="listitem">eighth</div>
     <div class="item" role="listitem">eighty</div>
+    <div class="item" role="listitem">either</div>
     <div class="item" role="listitem">elderly</div>
     <div class="item" role="listitem">electricity</div>
     <div class="item" role="listitem">electronic</div>
@@ -734,9 +779,13 @@
     <div class="item" role="listitem">eleven</div>
     <div class="item" role="listitem">eleventh</div>
     <div class="item" role="listitem">else</div>
+    <div class="item" role="listitem">e-mail</div>
     <div class="item" role="listitem">emergency</div>
+    <div class="item" role="listitem">Emily</div>
+    <div class="item" role="listitem">Emma</div>
     <div class="item" role="listitem">emperor</div>
     <div class="item" role="listitem">employee</div>
+    <div class="item" role="listitem">employer</div>
     <div class="item" role="listitem">encourage</div>
     <div class="item" role="listitem">end</div>
     <div class="item" role="listitem">endangered</div>
@@ -745,9 +794,9 @@
     <div class="item" role="listitem">energetic</div>
     <div class="item" role="listitem">energy</div>
     <div class="item" role="listitem">engineer</div>
+    <div class="item" role="listitem">England</div>
     <div class="item" role="listitem">English</div>
     <div class="item" role="listitem">enjoy</div>
-    <div class="item" role="listitem">enjoyed</div>
     <div class="item" role="listitem">enough</div>
     <div class="item" role="listitem">ensure</div>
     <div class="item" role="listitem">enter</div>
@@ -763,13 +812,14 @@
     <div class="item" role="listitem">essay</div>
     <div class="item" role="listitem">establish</div>
     <div class="item" role="listitem">ethical</div>
+    <div class="item" role="listitem">ethnic</div>
+    <div class="item" role="listitem">eucalyptus</div>
     <div class="item" role="listitem">Europe</div>
     <div class="item" role="listitem">evacuation</div>
     <div class="item" role="listitem">eve</div>
     <div class="item" role="listitem">even</div>
     <div class="item" role="listitem">evening</div>
     <div class="item" role="listitem">event</div>
-    <div class="item" role="listitem">events</div>
     <div class="item" role="listitem">eventually</div>
     <div class="item" role="listitem">ever</div>
     <div class="item" role="listitem">every</div>
@@ -777,6 +827,7 @@
     <div class="item" role="listitem">everything</div>
     <div class="item" role="listitem">everywhere</div>
     <div class="item" role="listitem">exam</div>
+    <div class="item" role="listitem">examination</div>
     <div class="item" role="listitem">example</div>
     <div class="item" role="listitem">exception</div>
     <div class="item" role="listitem">exchange</div>
@@ -825,6 +876,7 @@
     <div class="item" role="listitem">feather</div>
     <div class="item" role="listitem">feature</div>
     <div class="item" role="listitem">February</div>
+    <div class="item" role="listitem">fed</div>
     <div class="item" role="listitem">feed</div>
     <div class="item" role="listitem">feedback</div>
     <div class="item" role="listitem">feel</div>
@@ -832,6 +884,7 @@
     <div class="item" role="listitem">fell</div>
     <div class="item" role="listitem">felt</div>
     <div class="item" role="listitem">fence</div>
+    <div class="item" role="listitem">Ferris</div>
     <div class="item" role="listitem">festival</div>
     <div class="item" role="listitem">fever</div>
     <div class="item" role="listitem">few</div>
@@ -845,6 +898,7 @@
     <div class="item" role="listitem">fight</div>
     <div class="item" role="listitem">fighter</div>
     <div class="item" role="listitem">figure</div>
+    <div class="item" role="listitem">Filipino</div>
     <div class="item" role="listitem">fill</div>
     <div class="item" role="listitem">film</div>
     <div class="item" role="listitem">final</div>
@@ -860,6 +914,7 @@
     <div class="item" role="listitem">firefighter</div>
     <div class="item" role="listitem">firework</div>
     <div class="item" role="listitem">first</div>
+    <div class="item" role="listitem">first-hand</div>
     <div class="item" role="listitem">fish</div>
     <div class="item" role="listitem">fisher</div>
     <div class="item" role="listitem">fishing</div>
@@ -893,6 +948,7 @@
     <div class="item" role="listitem">forest</div>
     <div class="item" role="listitem">forever</div>
     <div class="item" role="listitem">forget</div>
+    <div class="item" role="listitem">forgetful</div>
     <div class="item" role="listitem">forgot</div>
     <div class="item" role="listitem">forgotten</div>
     <div class="item" role="listitem">form</div>
@@ -903,7 +959,7 @@
     <div class="item" role="listitem">forty</div>
     <div class="item" role="listitem">forward</div>
     <div class="item" role="listitem">fossil</div>
-    <div class="item" role="listitem">fossil fuel</div>
+    <div class="item" role="listitem">fought</div>
     <div class="item" role="listitem">found</div>
     <div class="item" role="listitem">four</div>
     <div class="item" role="listitem">fourteen</div>
@@ -925,6 +981,7 @@
     <div class="item" role="listitem">from</div>
     <div class="item" role="listitem">front</div>
     <div class="item" role="listitem">fruit</div>
+    <div class="item" role="listitem">fry</div>
     <div class="item" role="listitem">fuel</div>
     <div class="item" role="listitem">full</div>
     <div class="item" role="listitem">fun</div>
@@ -936,6 +993,7 @@
     <div class="item" role="listitem">furthest</div>
     <div class="item" role="listitem">future</div>
     <div class="item" role="listitem">game</div>
+    <div class="item" role="listitem">Gandhi</div>
     <div class="item" role="listitem">garage</div>
     <div class="item" role="listitem">garbage</div>
     <div class="item" role="listitem">gas</div>
@@ -956,33 +1014,39 @@
     <div class="item" role="listitem">given</div>
     <div class="item" role="listitem">glacier</div>
     <div class="item" role="listitem">glad</div>
+    <div class="item" role="listitem">glass</div>
     <div class="item" role="listitem">glasses</div>
     <div class="item" role="listitem">global</div>
+    <div class="item" role="listitem">globally</div>
     <div class="item" role="listitem">globe</div>
     <div class="item" role="listitem">glove</div>
     <div class="item" role="listitem">glue</div>
     <div class="item" role="listitem">go</div>
     <div class="item" role="listitem">goat</div>
     <div class="item" role="listitem">god</div>
+    <div class="item" role="listitem">Godzilla</div>
     <div class="item" role="listitem">goes</div>
     <div class="item" role="listitem">going</div>
     <div class="item" role="listitem">gold</div>
     <div class="item" role="listitem">golden</div>
+    <div class="item" role="listitem">gondola</div>
     <div class="item" role="listitem">gone</div>
     <div class="item" role="listitem">good</div>
     <div class="item" role="listitem">goodbye</div>
+    <div class="item" role="listitem">goodness</div>
     <div class="item" role="listitem">goods</div>
     <div class="item" role="listitem">gorilla</div>
     <div class="item" role="listitem">got</div>
     <div class="item" role="listitem">gotten</div>
     <div class="item" role="listitem">government</div>
-    <div class="item" role="listitem">gracier</div>
     <div class="item" role="listitem">grade</div>
     <div class="item" role="listitem">graduate</div>
     <div class="item" role="listitem">graduation</div>
     <div class="item" role="listitem">grand</div>
     <div class="item" role="listitem">grandfather</div>
+    <div class="item" role="listitem">grandma</div>
     <div class="item" role="listitem">grandmother</div>
+    <div class="item" role="listitem">grandpa</div>
     <div class="item" role="listitem">grape</div>
     <div class="item" role="listitem">graph</div>
     <div class="item" role="listitem">grass</div>
@@ -996,6 +1060,7 @@
     <div class="item" role="listitem">ground</div>
     <div class="item" role="listitem">group</div>
     <div class="item" role="listitem">grow</div>
+    <div class="item" role="listitem">grown</div>
     <div class="item" role="listitem">growth</div>
     <div class="item" role="listitem">guess</div>
     <div class="item" role="listitem">guesses</div>
@@ -1003,6 +1068,7 @@
     <div class="item" role="listitem">guidance</div>
     <div class="item" role="listitem">guide</div>
     <div class="item" role="listitem">guitar</div>
+    <div class="item" role="listitem">guitarist</div>
     <div class="item" role="listitem">gum</div>
     <div class="item" role="listitem">gun</div>
     <div class="item" role="listitem">gym</div>
@@ -1010,6 +1076,7 @@
     <div class="item" role="listitem">habit</div>
     <div class="item" role="listitem">habitat</div>
     <div class="item" role="listitem">had</div>
+    <div class="item" role="listitem">hadn&#x27;t</div>
     <div class="item" role="listitem">hair</div>
     <div class="item" role="listitem">hairdresser</div>
     <div class="item" role="listitem">half</div>
@@ -1019,6 +1086,7 @@
     <div class="item" role="listitem">hamburger</div>
     <div class="item" role="listitem">hand</div>
     <div class="item" role="listitem">handle</div>
+    <div class="item" role="listitem">handrail</div>
     <div class="item" role="listitem">happen</div>
     <div class="item" role="listitem">happily</div>
     <div class="item" role="listitem">happiness</div>
@@ -1033,6 +1101,7 @@
     <div class="item" role="listitem">have</div>
     <div class="item" role="listitem">haven&#x27;t</div>
     <div class="item" role="listitem">having</div>
+    <div class="item" role="listitem">Hawaii</div>
     <div class="item" role="listitem">he</div>
     <div class="item" role="listitem">head</div>
     <div class="item" role="listitem">headache</div>
@@ -1050,10 +1119,12 @@
     <div class="item" role="listitem">helpful</div>
     <div class="item" role="listitem">her</div>
     <div class="item" role="listitem">here</div>
+    <div class="item" role="listitem">here&#x27;s</div>
     <div class="item" role="listitem">heritage</div>
     <div class="item" role="listitem">hero</div>
     <div class="item" role="listitem">hers</div>
     <div class="item" role="listitem">herself</div>
+    <div class="item" role="listitem">he&#x27;s</div>
     <div class="item" role="listitem">hi</div>
     <div class="item" role="listitem">hide-and-seek</div>
     <div class="item" role="listitem">high</div>
@@ -1079,6 +1150,7 @@
     <div class="item" role="listitem">homework</div>
     <div class="item" role="listitem">honest</div>
     <div class="item" role="listitem">honey</div>
+    <div class="item" role="listitem">Honolulu</div>
     <div class="item" role="listitem">hope</div>
     <div class="item" role="listitem">hopeful</div>
     <div class="item" role="listitem">horizon</div>
@@ -1094,6 +1166,7 @@
     <div class="item" role="listitem">house</div>
     <div class="item" role="listitem">how</div>
     <div class="item" role="listitem">however</div>
+    <div class="item" role="listitem">how&#x27;s</div>
     <div class="item" role="listitem">human</div>
     <div class="item" role="listitem">humid</div>
     <div class="item" role="listitem">hundred</div>
@@ -1104,11 +1177,13 @@
     <div class="item" role="listitem">hurry</div>
     <div class="item" role="listitem">hurt</div>
     <div class="item" role="listitem">husband</div>
+    <div class="item" role="listitem">hut</div>
     <div class="item" role="listitem">I</div>
     <div class="item" role="listitem">ibis</div>
     <div class="item" role="listitem">ice</div>
     <div class="item" role="listitem">iced</div>
     <div class="item" role="listitem">Iceland</div>
+    <div class="item" role="listitem">I&#x27;d</div>
     <div class="item" role="listitem">idea</div>
     <div class="item" role="listitem">if</div>
     <div class="item" role="listitem">ignore</div>
@@ -1119,6 +1194,7 @@
     <div class="item" role="listitem">illiterate</div>
     <div class="item" role="listitem">illustration</div>
     <div class="item" role="listitem">illustrator</div>
+    <div class="item" role="listitem">I&#x27;m</div>
     <div class="item" role="listitem">image</div>
     <div class="item" role="listitem">imagination</div>
     <div class="item" role="listitem">imagine</div>
@@ -1169,9 +1245,12 @@
     <div class="item" role="listitem">iron</div>
     <div class="item" role="listitem">is</div>
     <div class="item" role="listitem">island</div>
+    <div class="item" role="listitem">isn&#x27;t</div>
     <div class="item" role="listitem">it</div>
+    <div class="item" role="listitem">Italian</div>
     <div class="item" role="listitem">Italy</div>
     <div class="item" role="listitem">item</div>
+    <div class="item" role="listitem">it&#x27;ll</div>
     <div class="item" role="listitem">its</div>
     <div class="item" role="listitem">It&#x27;s</div>
     <div class="item" role="listitem">I&#x27;ve</div>
@@ -1181,14 +1260,18 @@
     <div class="item" role="listitem">January</div>
     <div class="item" role="listitem">Japan</div>
     <div class="item" role="listitem">Japanese</div>
+    <div class="item" role="listitem">jar</div>
     <div class="item" role="listitem">jeans</div>
     <div class="item" role="listitem">jellyfish</div>
     <div class="item" role="listitem">jet</div>
     <div class="item" role="listitem">jewel</div>
+    <div class="item" role="listitem">Jim</div>
     <div class="item" role="listitem">job</div>
     <div class="item" role="listitem">jog</div>
     <div class="item" role="listitem">jogging</div>
+    <div class="item" role="listitem">John</div>
     <div class="item" role="listitem">join</div>
+    <div class="item" role="listitem">Josh</div>
     <div class="item" role="listitem">joy</div>
     <div class="item" role="listitem">judge</div>
     <div class="item" role="listitem">judging</div>
@@ -1199,9 +1282,12 @@
     <div class="item" role="listitem">June</div>
     <div class="item" role="listitem">junior</div>
     <div class="item" role="listitem">just</div>
+    <div class="item" role="listitem">Justin</div>
     <div class="item" role="listitem">kangaroo</div>
     <div class="item" role="listitem">kanji</div>
+    <div class="item" role="listitem">Kate</div>
     <div class="item" role="listitem">keep</div>
+    <div class="item" role="listitem">Ken</div>
     <div class="item" role="listitem">kendo</div>
     <div class="item" role="listitem">Kenya</div>
     <div class="item" role="listitem">kept</div>
@@ -1217,6 +1303,7 @@
     <div class="item" role="listitem">kindness</div>
     <div class="item" role="listitem">king</div>
     <div class="item" role="listitem">kit</div>
+    <div class="item" role="listitem">kitchen</div>
     <div class="item" role="listitem">kite</div>
     <div class="item" role="listitem">kiwi</div>
     <div class="item" role="listitem">knee</div>
@@ -1228,7 +1315,12 @@
     <div class="item" role="listitem">knowledge</div>
     <div class="item" role="listitem">known</div>
     <div class="item" role="listitem">koala</div>
+    <div class="item" role="listitem">Korea</div>
+    <div class="item" role="listitem">Korean</div>
+    <div class="item" role="listitem">Kyoto</div>
     <div class="item" role="listitem">labor</div>
+    <div class="item" role="listitem">laid</div>
+    <div class="item" role="listitem">lain</div>
     <div class="item" role="listitem">lake</div>
     <div class="item" role="listitem">lamp</div>
     <div class="item" role="listitem">land</div>
@@ -1246,6 +1338,7 @@
     <div class="item" role="listitem">lazy</div>
     <div class="item" role="listitem">lead</div>
     <div class="item" role="listitem">leader</div>
+    <div class="item" role="listitem">leading</div>
     <div class="item" role="listitem">leaf</div>
     <div class="item" role="listitem">learn</div>
     <div class="item" role="listitem">learned</div>
@@ -1254,6 +1347,7 @@
     <div class="item" role="listitem">leave</div>
     <div class="item" role="listitem">leaves</div>
     <div class="item" role="listitem">leaving</div>
+    <div class="item" role="listitem">LED</div>
     <div class="item" role="listitem">left</div>
     <div class="item" role="listitem">left-handed</div>
     <div class="item" role="listitem">leg</div>
@@ -1272,24 +1366,30 @@
     <div class="item" role="listitem">libraries</div>
     <div class="item" role="listitem">library</div>
     <div class="item" role="listitem">lie</div>
+    <div class="item" role="listitem">lied</div>
     <div class="item" role="listitem">life</div>
     <div class="item" role="listitem">light</div>
     <div class="item" role="listitem">like</div>
+    <div class="item" role="listitem">Lily</div>
     <div class="item" role="listitem">limit</div>
     <div class="item" role="listitem">limited</div>
     <div class="item" role="listitem">line</div>
     <div class="item" role="listitem">link</div>
     <div class="item" role="listitem">lion</div>
     <div class="item" role="listitem">lip</div>
+    <div class="item" role="listitem">Lisa</div>
     <div class="item" role="listitem">list</div>
     <div class="item" role="listitem">listen</div>
+    <div class="item" role="listitem">liter</div>
     <div class="item" role="listitem">litter</div>
     <div class="item" role="listitem">little</div>
     <div class="item" role="listitem">live</div>
     <div class="item" role="listitem">lives</div>
     <div class="item" role="listitem">living</div>
     <div class="item" role="listitem">local</div>
+    <div class="item" role="listitem">locally</div>
     <div class="item" role="listitem">logging</div>
+    <div class="item" role="listitem">London</div>
     <div class="item" role="listitem">lonely</div>
     <div class="item" role="listitem">long</div>
     <div class="item" role="listitem">look</div>
@@ -1309,10 +1409,13 @@
     <div class="item" role="listitem">lullaby</div>
     <div class="item" role="listitem">lunch</div>
     <div class="item" role="listitem">lunches</div>
+    <div class="item" role="listitem">ma&#x27;am</div>
+    <div class="item" role="listitem">Mac</div>
     <div class="item" role="listitem">machine</div>
     <div class="item" role="listitem">made</div>
     <div class="item" role="listitem">magazine</div>
     <div class="item" role="listitem">magnet</div>
+    <div class="item" role="listitem">main</div>
     <div class="item" role="listitem">make</div>
     <div class="item" role="listitem">making</div>
     <div class="item" role="listitem">Malay</div>
@@ -1327,11 +1430,13 @@
     <div class="item" role="listitem">marathon</div>
     <div class="item" role="listitem">marble</div>
     <div class="item" role="listitem">March</div>
+    <div class="item" role="listitem">Margaret</div>
     <div class="item" role="listitem">mark</div>
     <div class="item" role="listitem">marker</div>
     <div class="item" role="listitem">market</div>
     <div class="item" role="listitem">marry</div>
     <div class="item" role="listitem">martial</div>
+    <div class="item" role="listitem">Mary</div>
     <div class="item" role="listitem">mask</div>
     <div class="item" role="listitem">match</div>
     <div class="item" role="listitem">matches</div>
@@ -1342,7 +1447,7 @@
     <div class="item" role="listitem">maybe</div>
     <div class="item" role="listitem">mayor</div>
     <div class="item" role="listitem">me</div>
-    <div class="item" role="listitem">meals</div>
+    <div class="item" role="listitem">meal</div>
     <div class="item" role="listitem">mean</div>
     <div class="item" role="listitem">meaning</div>
     <div class="item" role="listitem">meant</div>
@@ -1352,12 +1457,15 @@
     <div class="item" role="listitem">medicine</div>
     <div class="item" role="listitem">medium</div>
     <div class="item" role="listitem">meet</div>
+    <div class="item" role="listitem">Meg</div>
     <div class="item" role="listitem">melon</div>
     <div class="item" role="listitem">member</div>
     <div class="item" role="listitem">memories</div>
     <div class="item" role="listitem">memory</div>
+    <div class="item" role="listitem">men</div>
     <div class="item" role="listitem">menu</div>
     <div class="item" role="listitem">merchant</div>
+    <div class="item" role="listitem">Merlion</div>
     <div class="item" role="listitem">message</div>
     <div class="item" role="listitem">met</div>
     <div class="item" role="listitem">metal</div>
@@ -1367,6 +1475,8 @@
     <div class="item" role="listitem">middle</div>
     <div class="item" role="listitem">midnight</div>
     <div class="item" role="listitem">migratory</div>
+    <div class="item" role="listitem">Mike</div>
+    <div class="item" role="listitem">mile</div>
     <div class="item" role="listitem">milk</div>
     <div class="item" role="listitem">million</div>
     <div class="item" role="listitem">mind</div>
@@ -1386,11 +1496,13 @@
     <div class="item" role="listitem">mix</div>
     <div class="item" role="listitem">mixed</div>
     <div class="item" role="listitem">modern</div>
+    <div class="item" role="listitem">mom</div>
     <div class="item" role="listitem">moment</div>
     <div class="item" role="listitem">mommy</div>
     <div class="item" role="listitem">Monday</div>
     <div class="item" role="listitem">money</div>
     <div class="item" role="listitem">Mongolia</div>
+    <div class="item" role="listitem">Mongolian</div>
     <div class="item" role="listitem">monkey</div>
     <div class="item" role="listitem">month</div>
     <div class="item" role="listitem">monthly</div>
@@ -1400,6 +1512,7 @@
     <div class="item" role="listitem">more</div>
     <div class="item" role="listitem">moreover</div>
     <div class="item" role="listitem">morning</div>
+    <div class="item" role="listitem">Morocco</div>
     <div class="item" role="listitem">mosque</div>
     <div class="item" role="listitem">most</div>
     <div class="item" role="listitem">mother</div>
@@ -1415,6 +1528,7 @@
     <div class="item" role="listitem">Mr.</div>
     <div class="item" role="listitem">Mrs.</div>
     <div class="item" role="listitem">Ms.</div>
+    <div class="item" role="listitem">Mt.</div>
     <div class="item" role="listitem">much</div>
     <div class="item" role="listitem">mug</div>
     <div class="item" role="listitem">museum</div>
@@ -1425,10 +1539,10 @@
     <div class="item" role="listitem">must</div>
     <div class="item" role="listitem">mustn&#x27;t</div>
     <div class="item" role="listitem">my</div>
-    <div class="item" role="listitem">my brother</div>
     <div class="item" role="listitem">myself</div>
     <div class="item" role="listitem">name</div>
     <div class="item" role="listitem">namul</div>
+    <div class="item" role="listitem">Nancy</div>
     <div class="item" role="listitem">Naples</div>
     <div class="item" role="listitem">national</div>
     <div class="item" role="listitem">native</div>
@@ -1448,12 +1562,15 @@
     <div class="item" role="listitem">nervous</div>
     <div class="item" role="listitem">nest</div>
     <div class="item" role="listitem">net</div>
+    <div class="item" role="listitem">netball</div>
     <div class="item" role="listitem">never</div>
     <div class="item" role="listitem">new</div>
     <div class="item" role="listitem">New York</div>
+    <div class="item" role="listitem">New Zealand</div>
     <div class="item" role="listitem">news</div>
     <div class="item" role="listitem">newscaster</div>
     <div class="item" role="listitem">newspaper</div>
+    <div class="item" role="listitem">next</div>
     <div class="item" role="listitem">next-door</div>
     <div class="item" role="listitem">nice</div>
     <div class="item" role="listitem">night</div>
@@ -1463,8 +1580,11 @@
     <div class="item" role="listitem">ninety</div>
     <div class="item" role="listitem">ninth</div>
     <div class="item" role="listitem">no</div>
+    <div class="item" role="listitem">nod</div>
     <div class="item" role="listitem">noise</div>
     <div class="item" role="listitem">noisy</div>
+    <div class="item" role="listitem">non-violence</div>
+    <div class="item" role="listitem">non-violent</div>
     <div class="item" role="listitem">noodle</div>
     <div class="item" role="listitem">noon</div>
     <div class="item" role="listitem">north</div>
@@ -1495,6 +1615,7 @@
     <div class="item" role="listitem">often</div>
     <div class="item" role="listitem">oh</div>
     <div class="item" role="listitem">oil</div>
+    <div class="item" role="listitem">oily</div>
     <div class="item" role="listitem">OK</div>
     <div class="item" role="listitem">old</div>
     <div class="item" role="listitem">Olympic</div>
@@ -1506,19 +1627,19 @@
     <div class="item" role="listitem">one</div>
     <div class="item" role="listitem">onion</div>
     <div class="item" role="listitem">only</div>
+    <div class="item" role="listitem">oops</div>
     <div class="item" role="listitem">open</div>
     <div class="item" role="listitem">operation</div>
     <div class="item" role="listitem">opinion</div>
     <div class="item" role="listitem">opportunity</div>
     <div class="item" role="listitem">or</div>
     <div class="item" role="listitem">orange</div>
-    <div class="item" role="listitem">orange juice</div>
-    <div class="item" role="listitem">oranges</div>
     <div class="item" role="listitem">orangutan</div>
     <div class="item" role="listitem">order</div>
     <div class="item" role="listitem">ordinary</div>
     <div class="item" role="listitem">original</div>
     <div class="item" role="listitem">originally</div>
+    <div class="item" role="listitem">Osaka</div>
     <div class="item" role="listitem">other</div>
     <div class="item" role="listitem">otter</div>
     <div class="item" role="listitem">our</div>
@@ -1551,12 +1672,16 @@
     <div class="item" role="listitem">pardon</div>
     <div class="item" role="listitem">parent</div>
     <div class="item" role="listitem">parfait</div>
+    <div class="item" role="listitem">Paris</div>
     <div class="item" role="listitem">park</div>
+    <div class="item" role="listitem">parking</div>
     <div class="item" role="listitem">part</div>
+    <div class="item" role="listitem">party</div>
     <div class="item" role="listitem">pass</div>
     <div class="item" role="listitem">passes</div>
     <div class="item" role="listitem">past</div>
     <div class="item" role="listitem">pastry</div>
+    <div class="item" role="listitem">Paul</div>
     <div class="item" role="listitem">pay</div>
     <div class="item" role="listitem">peace</div>
     <div class="item" role="listitem">peaceful</div>
@@ -1570,6 +1695,8 @@
     <div class="item" role="listitem">percent</div>
     <div class="item" role="listitem">perfect</div>
     <div class="item" role="listitem">perform</div>
+    <div class="item" role="listitem">performance</div>
+    <div class="item" role="listitem">performer</div>
     <div class="item" role="listitem">perhaps</div>
     <div class="item" role="listitem">period</div>
     <div class="item" role="listitem">person</div>
@@ -1578,18 +1705,23 @@
     <div class="item" role="listitem">Peru</div>
     <div class="item" role="listitem">pet</div>
     <div class="item" role="listitem">pharmacist</div>
+    <div class="item" role="listitem">Philippines</div>
+    <div class="item" role="listitem">phone</div>
     <div class="item" role="listitem">photo</div>
     <div class="item" role="listitem">photograph</div>
     <div class="item" role="listitem">photographer</div>
     <div class="item" role="listitem">piano</div>
     <div class="item" role="listitem">pick</div>
+    <div class="item" role="listitem">picnic</div>
     <div class="item" role="listitem">picture</div>
     <div class="item" role="listitem">pie</div>
     <div class="item" role="listitem">piece</div>
     <div class="item" role="listitem">pig</div>
+    <div class="item" role="listitem">pilaf</div>
     <div class="item" role="listitem">pilot</div>
     <div class="item" role="listitem">pineapple</div>
     <div class="item" role="listitem">pink</div>
+    <div class="item" role="listitem">Pixar</div>
     <div class="item" role="listitem">pizza</div>
     <div class="item" role="listitem">place</div>
     <div class="item" role="listitem">plan</div>
@@ -1608,11 +1740,11 @@
     <div class="item" role="listitem">please</div>
     <div class="item" role="listitem">pleasure</div>
     <div class="item" role="listitem">plum</div>
-    <div class="item" role="listitem">pm</div>
     <div class="item" role="listitem">pocket</div>
     <div class="item" role="listitem">poem</div>
     <div class="item" role="listitem">poet</div>
     <div class="item" role="listitem">point</div>
+    <div class="item" role="listitem">polar</div>
     <div class="item" role="listitem">police</div>
     <div class="item" role="listitem">pollute</div>
     <div class="item" role="listitem">pollution</div>
@@ -1630,14 +1762,19 @@
     <div class="item" role="listitem">positive</div>
     <div class="item" role="listitem">possible</div>
     <div class="item" role="listitem">post</div>
+    <div class="item" role="listitem">poster</div>
     <div class="item" role="listitem">pot</div>
     <div class="item" role="listitem">potato</div>
+    <div class="item" role="listitem">pottery</div>
+    <div class="item" role="listitem">powder</div>
     <div class="item" role="listitem">power</div>
+    <div class="item" role="listitem">powerful</div>
     <div class="item" role="listitem">practice</div>
     <div class="item" role="listitem">practicing</div>
     <div class="item" role="listitem">pray</div>
     <div class="item" role="listitem">prayed</div>
     <div class="item" role="listitem">precious</div>
+    <div class="item" role="listitem">prepare</div>
     <div class="item" role="listitem">prepared</div>
     <div class="item" role="listitem">present</div>
     <div class="item" role="listitem">presentation</div>
@@ -1662,6 +1799,7 @@
     <div class="item" role="listitem">progress</div>
     <div class="item" role="listitem">prohibit</div>
     <div class="item" role="listitem">promise</div>
+    <div class="item" role="listitem">prop</div>
     <div class="item" role="listitem">protect</div>
     <div class="item" role="listitem">protest</div>
     <div class="item" role="listitem">provide</div>
@@ -1704,6 +1842,7 @@
     <div class="item" role="listitem">ramen</div>
     <div class="item" role="listitem">ramp</div>
     <div class="item" role="listitem">ran</div>
+    <div class="item" role="listitem">rang</div>
     <div class="item" role="listitem">rapidly</div>
     <div class="item" role="listitem">rat</div>
     <div class="item" role="listitem">raw</div>
@@ -1739,6 +1878,8 @@
     <div class="item" role="listitem">relation</div>
     <div class="item" role="listitem">relationship</div>
     <div class="item" role="listitem">relatively</div>
+    <div class="item" role="listitem">relax</div>
+    <div class="item" role="listitem">relay</div>
     <div class="item" role="listitem">release</div>
     <div class="item" role="listitem">remember</div>
     <div class="item" role="listitem">remind</div>
@@ -1758,7 +1899,6 @@
     <div class="item" role="listitem">responsible</div>
     <div class="item" role="listitem">rest</div>
     <div class="item" role="listitem">restaurant</div>
-    <div class="item" role="listitem">restaurant</div>
     <div class="item" role="listitem">restroom</div>
     <div class="item" role="listitem">result</div>
     <div class="item" role="listitem">return</div>
@@ -1774,6 +1914,7 @@
     <div class="item" role="listitem">right</div>
     <div class="item" role="listitem">ring</div>
     <div class="item" role="listitem">rise</div>
+    <div class="item" role="listitem">risen</div>
     <div class="item" role="listitem">rising</div>
     <div class="item" role="listitem">river</div>
     <div class="item" role="listitem">riverbank</div>
@@ -1782,8 +1923,11 @@
     <div class="item" role="listitem">rock</div>
     <div class="item" role="listitem">rode</div>
     <div class="item" role="listitem">role</div>
+    <div class="item" role="listitem">roll</div>
     <div class="item" role="listitem">roller</div>
+    <div class="item" role="listitem">Ronald</div>
     <div class="item" role="listitem">roof</div>
+    <div class="item" role="listitem">rookie</div>
     <div class="item" role="listitem">room</div>
     <div class="item" role="listitem">root</div>
     <div class="item" role="listitem">rope</div>
@@ -1794,12 +1938,16 @@
     <div class="item" role="listitem">rule</div>
     <div class="item" role="listitem">ruler</div>
     <div class="item" role="listitem">run</div>
+    <div class="item" role="listitem">rung</div>
+    <div class="item" role="listitem">runner</div>
     <div class="item" role="listitem">running</div>
     <div class="item" role="listitem">rupee</div>
     <div class="item" role="listitem">rush</div>
     <div class="item" role="listitem">Russia</div>
+    <div class="item" role="listitem">Russian</div>
     <div class="item" role="listitem">sacred</div>
     <div class="item" role="listitem">sad</div>
+    <div class="item" role="listitem">safe</div>
     <div class="item" role="listitem">safely</div>
     <div class="item" role="listitem">said</div>
     <div class="item" role="listitem">sailing</div>
@@ -1812,6 +1960,7 @@
     <div class="item" role="listitem">same</div>
     <div class="item" role="listitem">sandwich</div>
     <div class="item" role="listitem">sang</div>
+    <div class="item" role="listitem">sank</div>
     <div class="item" role="listitem">sashimi</div>
     <div class="item" role="listitem">sat</div>
     <div class="item" role="listitem">satisfied</div>
@@ -1831,12 +1980,16 @@
     <div class="item" role="listitem">science</div>
     <div class="item" role="listitem">scientist</div>
     <div class="item" role="listitem">scissors</div>
+    <div class="item" role="listitem">Scotland</div>
+    <div class="item" role="listitem">Scottish</div>
     <div class="item" role="listitem">scroll</div>
+    <div class="item" role="listitem">scuba</div>
     <div class="item" role="listitem">sea</div>
     <div class="item" role="listitem">seafood</div>
     <div class="item" role="listitem">seal</div>
     <div class="item" role="listitem">season</div>
     <div class="item" role="listitem">seasonal</div>
+    <div class="item" role="listitem">seaweed</div>
     <div class="item" role="listitem">second</div>
     <div class="item" role="listitem">secret</div>
     <div class="item" role="listitem">see</div>
@@ -1852,6 +2005,7 @@
     <div class="item" role="listitem">sentence</div>
     <div class="item" role="listitem">September</div>
     <div class="item" role="listitem">serious</div>
+    <div class="item" role="listitem">server</div>
     <div class="item" role="listitem">service</div>
     <div class="item" role="listitem">set</div>
     <div class="item" role="listitem">seven</div>
@@ -1864,7 +2018,9 @@
     <div class="item" role="listitem">shade</div>
     <div class="item" role="listitem">shadow</div>
     <div class="item" role="listitem">shake</div>
+    <div class="item" role="listitem">shaken</div>
     <div class="item" role="listitem">shaking</div>
+    <div class="item" role="listitem">shall</div>
     <div class="item" role="listitem">shape</div>
     <div class="item" role="listitem">shaped</div>
     <div class="item" role="listitem">share</div>
@@ -1883,6 +2039,7 @@
     <div class="item" role="listitem">shoe</div>
     <div class="item" role="listitem">shoes</div>
     <div class="item" role="listitem">shogi</div>
+    <div class="item" role="listitem">shook</div>
     <div class="item" role="listitem">shoot</div>
     <div class="item" role="listitem">shop</div>
     <div class="item" role="listitem">shopkeeper</div>
@@ -1890,11 +2047,13 @@
     <div class="item" role="listitem">short</div>
     <div class="item" role="listitem">shortly</div>
     <div class="item" role="listitem">shorts</div>
+    <div class="item" role="listitem">shot</div>
     <div class="item" role="listitem">should</div>
     <div class="item" role="listitem">shoulder</div>
     <div class="item" role="listitem">shoulders</div>
     <div class="item" role="listitem">shout</div>
     <div class="item" role="listitem">show</div>
+    <div class="item" role="listitem">showed</div>
     <div class="item" role="listitem">shower</div>
     <div class="item" role="listitem">shown</div>
     <div class="item" role="listitem">shrimp</div>
@@ -1915,6 +2074,7 @@
     <div class="item" role="listitem">sincerely</div>
     <div class="item" role="listitem">sing</div>
     <div class="item" role="listitem">Singapore</div>
+    <div class="item" role="listitem">Singaporean</div>
     <div class="item" role="listitem">singer</div>
     <div class="item" role="listitem">sink</div>
     <div class="item" role="listitem">sister</div>
@@ -1938,6 +2098,7 @@
     <div class="item" role="listitem">skill</div>
     <div class="item" role="listitem">skirt</div>
     <div class="item" role="listitem">sky</div>
+    <div class="item" role="listitem">slam</div>
     <div class="item" role="listitem">sleep</div>
     <div class="item" role="listitem">sleepy</div>
     <div class="item" role="listitem">slept</div>
@@ -1950,6 +2111,7 @@
     <div class="item" role="listitem">smell</div>
     <div class="item" role="listitem">smile</div>
     <div class="item" role="listitem">smiling</div>
+    <div class="item" role="listitem">Smith</div>
     <div class="item" role="listitem">smoke</div>
     <div class="item" role="listitem">smoking</div>
     <div class="item" role="listitem">snack</div>
@@ -1974,6 +2136,7 @@
     <div class="item" role="listitem">solve</div>
     <div class="item" role="listitem">solving</div>
     <div class="item" role="listitem">some</div>
+    <div class="item" role="listitem">someday</div>
     <div class="item" role="listitem">somehow</div>
     <div class="item" role="listitem">someone</div>
     <div class="item" role="listitem">something</div>
@@ -1994,12 +2157,14 @@
     <div class="item" role="listitem">spaceship</div>
     <div class="item" role="listitem">spaghetti</div>
     <div class="item" role="listitem">Spain</div>
+    <div class="item" role="listitem">Spanish</div>
     <div class="item" role="listitem">speak</div>
     <div class="item" role="listitem">speaker</div>
     <div class="item" role="listitem">special</div>
     <div class="item" role="listitem">species</div>
     <div class="item" role="listitem">specific</div>
     <div class="item" role="listitem">speech</div>
+    <div class="item" role="listitem">speed</div>
     <div class="item" role="listitem">spell</div>
     <div class="item" role="listitem">spelling</div>
     <div class="item" role="listitem">spend</div>
@@ -2014,6 +2179,8 @@
     <div class="item" role="listitem">spoken</div>
     <div class="item" role="listitem">sport</div>
     <div class="item" role="listitem">sports</div>
+    <div class="item" role="listitem">sporty</div>
+    <div class="item" role="listitem">spot</div>
     <div class="item" role="listitem">spray</div>
     <div class="item" role="listitem">spread</div>
     <div class="item" role="listitem">spring</div>
@@ -2021,6 +2188,7 @@
     <div class="item" role="listitem">stadium</div>
     <div class="item" role="listitem">staff</div>
     <div class="item" role="listitem">stag</div>
+    <div class="item" role="listitem">stage</div>
     <div class="item" role="listitem">stair</div>
     <div class="item" role="listitem">stamp</div>
     <div class="item" role="listitem">stand</div>
@@ -2028,17 +2196,22 @@
     <div class="item" role="listitem">stapler</div>
     <div class="item" role="listitem">star</div>
     <div class="item" role="listitem">start</div>
+    <div class="item" role="listitem">starter</div>
     <div class="item" role="listitem">states</div>
     <div class="item" role="listitem">station</div>
     <div class="item" role="listitem">stationery</div>
     <div class="item" role="listitem">statue</div>
     <div class="item" role="listitem">stay</div>
     <div class="item" role="listitem">steak</div>
+    <div class="item" role="listitem">steal</div>
     <div class="item" role="listitem">steam</div>
     <div class="item" role="listitem">step</div>
+    <div class="item" role="listitem">Steve</div>
     <div class="item" role="listitem">stick</div>
     <div class="item" role="listitem">sticker</div>
     <div class="item" role="listitem">still</div>
+    <div class="item" role="listitem">stole</div>
+    <div class="item" role="listitem">stolen</div>
     <div class="item" role="listitem">stomachache</div>
     <div class="item" role="listitem">stone</div>
     <div class="item" role="listitem">stood</div>
@@ -2048,15 +2221,18 @@
     <div class="item" role="listitem">store</div>
     <div class="item" role="listitem">stories</div>
     <div class="item" role="listitem">story</div>
+    <div class="item" role="listitem">storytelling</div>
     <div class="item" role="listitem">straight</div>
     <div class="item" role="listitem">strange</div>
     <div class="item" role="listitem">stranger</div>
     <div class="item" role="listitem">strategy</div>
     <div class="item" role="listitem">strawberry</div>
     <div class="item" role="listitem">street</div>
+    <div class="item" role="listitem">strength</div>
     <div class="item" role="listitem">strict</div>
     <div class="item" role="listitem">strike</div>
     <div class="item" role="listitem">strong</div>
+    <div class="item" role="listitem">stuck</div>
     <div class="item" role="listitem">student</div>
     <div class="item" role="listitem">studied</div>
     <div class="item" role="listitem">studies</div>
@@ -2076,9 +2252,9 @@
     <div class="item" role="listitem">summer</div>
     <div class="item" role="listitem">sumo</div>
     <div class="item" role="listitem">sun</div>
-    <div class="item" role="listitem">sun</div>
     <div class="item" role="listitem">Sunday</div>
     <div class="item" role="listitem">sung</div>
+    <div class="item" role="listitem">sunk</div>
     <div class="item" role="listitem">sunny</div>
     <div class="item" role="listitem">sunrise</div>
     <div class="item" role="listitem">sunscreen</div>
@@ -2095,6 +2271,7 @@
     <div class="item" role="listitem">surely</div>
     <div class="item" role="listitem">surf</div>
     <div class="item" role="listitem">surfing</div>
+    <div class="item" role="listitem">surgery</div>
     <div class="item" role="listitem">surprise</div>
     <div class="item" role="listitem">surprised</div>
     <div class="item" role="listitem">surprising</div>
@@ -2108,13 +2285,16 @@
     <div class="item" role="listitem">sweat</div>
     <div class="item" role="listitem">sweater</div>
     <div class="item" role="listitem">sweatshirt</div>
+    <div class="item" role="listitem">Sweden</div>
     <div class="item" role="listitem">sweet</div>
     <div class="item" role="listitem">sweetheart</div>
     <div class="item" role="listitem">swim</div>
     <div class="item" role="listitem">swimming</div>
     <div class="item" role="listitem">swinging</div>
     <div class="item" role="listitem">swum</div>
+    <div class="item" role="listitem">Sydney</div>
     <div class="item" role="listitem">syllable</div>
+    <div class="item" role="listitem">symbol</div>
     <div class="item" role="listitem">table</div>
     <div class="item" role="listitem">tablet</div>
     <div class="item" role="listitem">tadpole</div>
@@ -2149,6 +2329,7 @@
     <div class="item" role="listitem">tempura</div>
     <div class="item" role="listitem">ten</div>
     <div class="item" role="listitem">tennis</div>
+    <div class="item" role="listitem">tent</div>
     <div class="item" role="listitem">tenth</div>
     <div class="item" role="listitem">terrible</div>
     <div class="item" role="listitem">text</div>
@@ -2167,8 +2348,10 @@
     <div class="item" role="listitem">then</div>
     <div class="item" role="listitem">there</div>
     <div class="item" role="listitem">therefore</div>
+    <div class="item" role="listitem">there&#x27;s</div>
     <div class="item" role="listitem">these</div>
     <div class="item" role="listitem">they</div>
+    <div class="item" role="listitem">they&#x27;ll</div>
     <div class="item" role="listitem">they&#x27;re</div>
     <div class="item" role="listitem">thick</div>
     <div class="item" role="listitem">thing</div>
@@ -2185,8 +2368,10 @@
     <div class="item" role="listitem">thought</div>
     <div class="item" role="listitem">thousand</div>
     <div class="item" role="listitem">three</div>
+    <div class="item" role="listitem">threw</div>
     <div class="item" role="listitem">through</div>
     <div class="item" role="listitem">throw</div>
+    <div class="item" role="listitem">thrown</div>
     <div class="item" role="listitem">Thursday</div>
     <div class="item" role="listitem">ticket</div>
     <div class="item" role="listitem">tie</div>
@@ -2202,7 +2387,9 @@
     <div class="item" role="listitem">toe</div>
     <div class="item" role="listitem">tofu</div>
     <div class="item" role="listitem">together</div>
+    <div class="item" role="listitem">Tokyo</div>
     <div class="item" role="listitem">told</div>
+    <div class="item" role="listitem">Tom</div>
     <div class="item" role="listitem">tomato</div>
     <div class="item" role="listitem">tomorrow</div>
     <div class="item" role="listitem">ton</div>
@@ -2214,10 +2401,14 @@
     <div class="item" role="listitem">top</div>
     <div class="item" role="listitem">topic</div>
     <div class="item" role="listitem">topping</div>
+    <div class="item" role="listitem">tore</div>
+    <div class="item" role="listitem">torn</div>
     <div class="item" role="listitem">touch</div>
     <div class="item" role="listitem">tough</div>
+    <div class="item" role="listitem">tour</div>
     <div class="item" role="listitem">tourism</div>
     <div class="item" role="listitem">tourist</div>
+    <div class="item" role="listitem">tournament</div>
     <div class="item" role="listitem">toward</div>
     <div class="item" role="listitem">towel</div>
     <div class="item" role="listitem">tower</div>
@@ -2228,11 +2419,13 @@
     <div class="item" role="listitem">trading</div>
     <div class="item" role="listitem">tradition</div>
     <div class="item" role="listitem">traditional</div>
+    <div class="item" role="listitem">traffic</div>
     <div class="item" role="listitem">trail</div>
     <div class="item" role="listitem">train</div>
     <div class="item" role="listitem">translate</div>
     <div class="item" role="listitem">translating</div>
     <div class="item" role="listitem">translation</div>
+    <div class="item" role="listitem">translator</div>
     <div class="item" role="listitem">transport</div>
     <div class="item" role="listitem">transportation</div>
     <div class="item" role="listitem">trash</div>
@@ -2242,6 +2435,7 @@
     <div class="item" role="listitem">tree</div>
     <div class="item" role="listitem">T-rex</div>
     <div class="item" role="listitem">triangle</div>
+    <div class="item" role="listitem">triathlon</div>
     <div class="item" role="listitem">tried</div>
     <div class="item" role="listitem">tries</div>
     <div class="item" role="listitem">trip</div>
@@ -2255,12 +2449,12 @@
     <div class="item" role="listitem">try</div>
     <div class="item" role="listitem">T-shirt</div>
     <div class="item" role="listitem">tsunami</div>
+    <div class="item" role="listitem">tube</div>
     <div class="item" role="listitem">Tuesday</div>
     <div class="item" role="listitem">tundra</div>
     <div class="item" role="listitem">turf</div>
     <div class="item" role="listitem">Turkey</div>
     <div class="item" role="listitem">turn</div>
-    <div class="item" role="listitem">turn into</div>
     <div class="item" role="listitem">turnover</div>
     <div class="item" role="listitem">turtle</div>
     <div class="item" role="listitem">TV</div>
@@ -2271,13 +2465,17 @@
     <div class="item" role="listitem">twice</div>
     <div class="item" role="listitem">two</div>
     <div class="item" role="listitem">type</div>
+    <div class="item" role="listitem">tyrannosaurus</div>
+    <div class="item" role="listitem">U.K.</div>
     <div class="item" role="listitem">U.S.</div>
     <div class="item" role="listitem">umbrella</div>
+    <div class="item" role="listitem">umm</div>
     <div class="item" role="listitem">uncle</div>
     <div class="item" role="listitem">uncomfortable</div>
     <div class="item" role="listitem">under</div>
     <div class="item" role="listitem">understand</div>
     <div class="item" role="listitem">understood</div>
+    <div class="item" role="listitem">UNESCO</div>
     <div class="item" role="listitem">unfair</div>
     <div class="item" role="listitem">unfold</div>
     <div class="item" role="listitem">unhappy</div>
@@ -2297,6 +2495,7 @@
     <div class="item" role="listitem">use</div>
     <div class="item" role="listitem">used</div>
     <div class="item" role="listitem">useful</div>
+    <div class="item" role="listitem">user</div>
     <div class="item" role="listitem">using</div>
     <div class="item" role="listitem">usual</div>
     <div class="item" role="listitem">usually</div>
@@ -2309,7 +2508,7 @@
     <div class="item" role="listitem">various</div>
     <div class="item" role="listitem">vegan</div>
     <div class="item" role="listitem">vegetable</div>
-    <div class="item" role="listitem">vegetables</div>
+    <div class="item" role="listitem">Venice</div>
     <div class="item" role="listitem">very</div>
     <div class="item" role="listitem">vest</div>
     <div class="item" role="listitem">vet</div>
@@ -2324,6 +2523,7 @@
     <div class="item" role="listitem">visit</div>
     <div class="item" role="listitem">visited</div>
     <div class="item" role="listitem">visitor</div>
+    <div class="item" role="listitem">voice</div>
     <div class="item" role="listitem">volleyball</div>
     <div class="item" role="listitem">volunteer</div>
     <div class="item" role="listitem">vulture</div>
@@ -2340,14 +2540,15 @@
     <div class="item" role="listitem">warming</div>
     <div class="item" role="listitem">was</div>
     <div class="item" role="listitem">wash</div>
+    <div class="item" role="listitem">wasn&#x27;t</div>
     <div class="item" role="listitem">waste</div>
     <div class="item" role="listitem">wasting</div>
     <div class="item" role="listitem">watch</div>
-    <div class="item" role="listitem">watched</div>
     <div class="item" role="listitem">watches</div>
     <div class="item" role="listitem">watching</div>
     <div class="item" role="listitem">water</div>
     <div class="item" role="listitem">watermelon</div>
+    <div class="item" role="listitem">waterproof</div>
     <div class="item" role="listitem">wave</div>
     <div class="item" role="listitem">waving</div>
     <div class="item" role="listitem">way</div>
@@ -2356,8 +2557,10 @@
     <div class="item" role="listitem">weapon</div>
     <div class="item" role="listitem">wear</div>
     <div class="item" role="listitem">weather</div>
+    <div class="item" role="listitem">website</div>
     <div class="item" role="listitem">Wednesday</div>
     <div class="item" role="listitem">week</div>
+    <div class="item" role="listitem">weekday</div>
     <div class="item" role="listitem">weekend</div>
     <div class="item" role="listitem">weekly</div>
     <div class="item" role="listitem">weigh</div>
@@ -2369,16 +2572,23 @@
     <div class="item" role="listitem">well-known</div>
     <div class="item" role="listitem">well-off</div>
     <div class="item" role="listitem">went</div>
+    <div class="item" role="listitem">were</div>
+    <div class="item" role="listitem">we&#x27;re</div>
+    <div class="item" role="listitem">weren&#x27;t</div>
     <div class="item" role="listitem">west</div>
+    <div class="item" role="listitem">Westminster</div>
     <div class="item" role="listitem">wet</div>
     <div class="item" role="listitem">wetland</div>
     <div class="item" role="listitem">we&#x27;ve</div>
     <div class="item" role="listitem">whale</div>
     <div class="item" role="listitem">what</div>
     <div class="item" role="listitem">what&#x27;s</div>
+    <div class="item" role="listitem">wheel</div>
     <div class="item" role="listitem">wheelchair</div>
     <div class="item" role="listitem">when</div>
+    <div class="item" role="listitem">when&#x27;s</div>
     <div class="item" role="listitem">where</div>
+    <div class="item" role="listitem">where&#x27;s</div>
     <div class="item" role="listitem">which</div>
     <div class="item" role="listitem">while</div>
     <div class="item" role="listitem">white</div>
@@ -2392,12 +2602,14 @@
     <div class="item" role="listitem">wild</div>
     <div class="item" role="listitem">wilderness</div>
     <div class="item" role="listitem">will</div>
+    <div class="item" role="listitem">Wilson</div>
     <div class="item" role="listitem">win</div>
     <div class="item" role="listitem">wind</div>
     <div class="item" role="listitem">window</div>
     <div class="item" role="listitem">windy</div>
     <div class="item" role="listitem">wing</div>
     <div class="item" role="listitem">winner</div>
+    <div class="item" role="listitem">winning</div>
     <div class="item" role="listitem">winter</div>
     <div class="item" role="listitem">wisdom</div>
     <div class="item" role="listitem">wish</div>
@@ -2405,8 +2617,10 @@
     <div class="item" role="listitem">with</div>
     <div class="item" role="listitem">without</div>
     <div class="item" role="listitem">woke</div>
+    <div class="item" role="listitem">woken</div>
     <div class="item" role="listitem">wolf</div>
     <div class="item" role="listitem">woman</div>
+    <div class="item" role="listitem">women</div>
     <div class="item" role="listitem">won</div>
     <div class="item" role="listitem">wonder</div>
     <div class="item" role="listitem">wonderful</div>
@@ -2414,7 +2628,6 @@
     <div class="item" role="listitem">wood</div>
     <div class="item" role="listitem">wool</div>
     <div class="item" role="listitem">word</div>
-    <div class="item" role="listitem">word(s)</div>
     <div class="item" role="listitem">wore</div>
     <div class="item" role="listitem">work</div>
     <div class="item" role="listitem">worker</div>
@@ -2426,15 +2639,18 @@
     <div class="item" role="listitem">worth</div>
     <div class="item" role="listitem">would</div>
     <div class="item" role="listitem">wow</div>
+    <div class="item" role="listitem">Woz</div>
     <div class="item" role="listitem">wrap</div>
     <div class="item" role="listitem">wrestling</div>
     <div class="item" role="listitem">write</div>
     <div class="item" role="listitem">writer</div>
+    <div class="item" role="listitem">written</div>
     <div class="item" role="listitem">wrong</div>
     <div class="item" role="listitem">wrote</div>
     <div class="item" role="listitem">xylophone</div>
     <div class="item" role="listitem">yacht</div>
     <div class="item" role="listitem">yak</div>
+    <div class="item" role="listitem">yeah</div>
     <div class="item" role="listitem">year</div>
     <div class="item" role="listitem">yearly</div>
     <div class="item" role="listitem">yellow</div>
@@ -2450,6 +2666,7 @@
     <div class="item" role="listitem">your</div>
     <div class="item" role="listitem">You&#x27;re</div>
     <div class="item" role="listitem">yours</div>
+    <div class="item" role="listitem">yourself</div>
     <div class="item" role="listitem">youth</div>
     <div class="item" role="listitem">you&#x27;ve</div>
     <div class="item" role="listitem">yo-yo</div>
