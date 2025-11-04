@@ -3,25 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>英単語リスト（発音ボタン付き）</title>
+  <title>英単語リスト（英/米アクセント切替）</title>
   <style>
     :root { --bg:#0b1220; --card:#111a2b; --text:#e6eef8; --muted:#b6c2d9; --accent:#4f8cff; --border:#23314d; }
-    html,body{height:100%;}
-    body{margin:0; background:var(--bg); color:var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", Arial, sans-serif;}
+    body{margin:0; background:var(--bg); color:var(--text); font-family:system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;}
     header{position:sticky; top:0; z-index:100; background:#111a2b; border-bottom:1px solid var(--border); padding:10px 12px;}
-    header h1{font-size:1.6em; line-height:1.4; text-align:left; margin:.4em 0;}
+    header h1{font-size:1.6em; line-height:1.4; margin:.4em 0;}
     header h1 small{display:block; font-size:.8em; color:var(--muted); margin-top:.2em;}
-    .toolbar{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-    #q{padding:8px 10px; font-size:1rem; background:#0e1628; color:var(--text); border:1px solid var(--border); border-radius:10px; min-width:220px; max-width:360px;}
+    .toolbar{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+    #q{padding:8px; font-size:1rem; background:#0e1628; color:var(--text); border:1px solid var(--border); border-radius:10px;}
     #copyBtn{background:var(--accent); color:#fff; border:none; border-radius:10px; padding:8px 12px; cursor:pointer;}
-    #count{color:var(--muted);}
-    main{padding:10px 12px 80px; max-width:760px; margin:0 auto;}
-    .item{display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border);}
-    .w{flex:1 1 auto; word-break:break-word;}
-    .speak{flex:0 0 auto; background:#0e1628; color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 10px; cursor:pointer;}
-    .speak:active{transform:scale(0.98);}
-    footer{position:sticky; bottom:0; background:#111a2b; border-top:1px solid var(--border); color:var(--muted); padding:6px 12px;}
-    .warn{color:#ffd166; margin-left:8px; font-size:.9em;}
+    select{background:#0e1628; color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px;}
+    main{padding:10px;}
+    .item{display:flex; align-items:center; gap:10px; padding:8px; border-bottom:1px solid var(--border);}
+    .speak{background:#0e1628; color:var(--text); border:1px solid var(--border); border-radius:8px; padding:4px 8px; cursor:pointer;}
+    footer{position:sticky; bottom:0; background:#111a2b; border-top:1px solid var(--border); color:var(--muted); padding:6px 12px; font-size:0.8em;}
   </style>
 </head>
 <body>
@@ -30,8 +26,12 @@
     <div class="toolbar">
       <input id="q" type="search" placeholder="先頭一致 (例: de)" />
       <button id="copyBtn">すべてコピー</button>
+      <label for="accent">アクセント:</label>
+      <select id="accent">
+        <option value="en-US" selected>米国英語</option>
+        <option value="en-GB">英国英語</option>
+      </select>
       <span id="count">合計 2616 語</span>
-      <span id="ttsWarn" class="warn" hidden>音声合成が使えない環境です</span>
     </div>
   </header>
 
@@ -212,7 +212,7 @@
     <div class="item"><button class="speak" data-word="bathroom" aria-label="発音を再生">🔊</button><span class="w">bathroom</span></div>
     <div class="item"><button class="speak" data-word="battery" aria-label="発音を再生">🔊</button><span class="w">battery</span></div>
     <div class="item"><button class="speak" data-word="be" aria-label="発音を再生">🔊</button><span class="w">be</span></div>
-    <div class="item"><button class="speak" data-word="beach" aria-label="発音を再生">🔊</button><span class="w">beach</span></div>
+    <div class="item"><button class="speak" data-word="beach " aria-label="発音を再生">🔊</button><span class="w">beach </span></div>
     <div class="item"><button class="speak" data-word="beaches" aria-label="発音を再生">🔊</button><span class="w">beaches</span></div>
     <div class="item"><button class="speak" data-word="bean" aria-label="発音を再生">🔊</button><span class="w">bean</span></div>
     <div class="item"><button class="speak" data-word="bear" aria-label="発音を再生">🔊</button><span class="w">bear</span></div>
@@ -1137,7 +1137,7 @@
     <div class="item"><button class="speak" data-word="hottest" aria-label="発音を再生">🔊</button><span class="w">hottest</span></div>
     <div class="item"><button class="speak" data-word="hour" aria-label="発音を再生">🔊</button><span class="w">hour</span></div>
     <div class="item"><button class="speak" data-word="house" aria-label="発音を再生">🔊</button><span class="w">house</span></div>
-    <div class="item"><button class="speak" data-word="house" aria-label="発音を再生">🔊</button><span class="w">house</span></div>
+    <div class="item"><button class="speak" data-word="house " aria-label="発音を再生">🔊</button><span class="w">house </span></div>
     <div class="item"><button class="speak" data-word="how" aria-label="発音を再生">🔊</button><span class="w">how</span></div>
     <div class="item"><button class="speak" data-word="however" aria-label="発音を再生">🔊</button><span class="w">however</span></div>
     <div class="item"><button class="speak" data-word="how&#x27;s" aria-label="発音を再生">🔊</button><span class="w">how&#x27;s</span></div>
@@ -2654,17 +2654,17 @@
     <div class="item"><button class="speak" data-word="zucchini" aria-label="発音を再生">🔊</button><span class="w">zucchini</span></div>
   </main>
 
-  <footer>🔊 を押すとその行の単語を読み上げます。検索後は自動で先頭へスクロールします。</footer>
+  <footer>🔊 を押すと発音を再生します。アクセントを切り替えると英/米の発音を選べます。</footer>
 
   <script>
-    // ====== フィルタ ======
     const q = document.getElementById('q');
     const items = Array.from(document.querySelectorAll('.item'));
     const count = document.getElementById('count');
     const copyBtn = document.getElementById('copyBtn');
+    const accentSel = document.getElementById('accent');
 
     function filter() {
-      const v = (q.value || '').trim().toLowerCase();
+      const v = q.value.trim().toLowerCase();
       let shown = 0;
       for (const el of items) {
         const txt = el.querySelector('.w').textContent.toLowerCase();
@@ -2683,42 +2683,17 @@
       catch (e) { alert('コピーに失敗しました'); }
     });
 
-    // ====== 発音（Web Speech API） ======
-    const warn = document.getElementById('ttsWarn');
+    // ====== 発音機能 ======
     const synth = window.speechSynthesis;
-    let selectedVoice = null;
-
-    function pickEnglishVoice(voices) {
-      return voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en-us'))
-          || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en-gb'))
-          || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en'));
-    }
-
-    function loadVoices() {
-      if (!('speechSynthesis' in window)) { warn.hidden = false; return; }
-      const voices = synth.getVoices();
-      selectedVoice = pickEnglishVoice(voices) || null;
-      if (!voices.length) { setTimeout(loadVoices, 300); }
-    }
-    if (!('speechSynthesis' in window)) { warn.hidden = false; }
-    else {
-      warn.hidden = true;
-      loadVoices();
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-    }
-
-    function speak(text) {
-      if (!('speechSynthesis' in window)) { alert('このブラウザは音声合成に対応していません'); return; }
-      const u = new SpeechSynthesisUtterance(text);
-      if (selectedVoice) { u.voice = selectedVoice; u.lang = selectedVoice.lang; }
-      else { u.lang = 'en-US'; }
+    function speak(word) {
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = accentSel.value;
       u.rate = 0.95;
-      u.pitch = 1.0;
       synth.cancel();
       synth.speak(u);
     }
 
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', e => {
       const btn = e.target.closest('.speak');
       if (!btn) return;
       const word = btn.getAttribute('data-word');
