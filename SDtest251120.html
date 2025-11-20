@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>大問ビューア＋一括採点テスター（不正解のみ正解表示・Aキー無効）</title>
+<style>
+  :root{
+    --bg:#0b1220; --card:#111a2b; --text:#e6eef8; --muted:#b6c2d9; --accent:#4f8cff; --ok:#20c997; --ng:#ff6b6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif}
+  header{position:sticky;top:0;background:linear-gradient(180deg,#0b1220,#0b1220cc);backdrop-filter:saturate(1.1) blur(4px);z-index:10;border-bottom:1px solid #1b2740}
+  .wrap{max-width:1100px;margin:0 auto;padding:14px 16px}
+  h1{margin:0 0 8px;font-size:20px;font-weight:700}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  select,button,label,input[type=file]{background:#0f1a30;color:var(--text);border:1px solid #22345a;border-radius:10px;padding:10px 12px;font-size:14px}
+  button{cursor:pointer}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .toggle{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:#0f1a30;border:1px solid #22345a}
+  .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
+  @media(min-width:1000px){ .grid{grid-template-columns:1.2fr .8fr} }
+  .card{background:var(--card);border:1px solid #1b2740;border-radius:16px;padding:16px;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+  .card h2{margin:0 0 10px;font-size:16px;color:#cfe0ff}
+  .muted{color:var(--muted)}
+  ol{margin:0;padding-left:22px}
+  .qrow{margin:10px 0 18px}
+  .answerBox{margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .answer-input{flex:1;min-width:300px;background:#0f1a30;color:var(--text);border:1px solid #22345a;border-radius:10px;padding:12px 14px;font-size:16px}
+  .pill{font-size:12px;border-radius:999px;padding:4px 10px;border:1px solid #22345a;background:#0f1a30;color:#9fb6e8}
+  .correct{border-color:var(--ok)!important; box-shadow:0 0 0 2px rgba(32,201,151,.25)}
+  .incorrect{border-color:var(--ng)!important; box-shadow:0 0 0 2px rgba(255,107,107,.25)}
+  .model{margin-top:6px;padding:8px 10px;border-radius:10px;background:#0f1a30;border:1px dashed #203258;color:#cfe0ff}
+  .hidden{display:none}
+
+    /* 使える語（Word Bank）の文字を大きく */
+    #bankArea{
+      font-size: 18px;      /* お好みで 20px などに上げてもOK */
+      line-height: 1.6;
+      word-spacing: .08em;  /* 語の間を少し広げる（任意） */
+    }
+
+    /* Word Bank のトークン化（クリックで挿入） */
+    #bankArea{ display:flex; flex-wrap:wrap; gap:8px; font-size:18px; line-height:1.6; }
+    .token{
+    background:#0f1a30; color:var(--text); border:1px solid #22345a;
+    border-radius:999px; padding:6px 10px; cursor:pointer; user-select:none;
+    }
+    .token:active{ transform:scale(0.98); }
+
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>大問ビューア＋テスト <span class="pill">不正解のみ正解表示／Aキー無効</span></h1>
+    <div class="toolbar">
+      <button id="prevBtn">← 前の大問</button>
+      <select id="daimonSelect" title="大問を選択"></select>
+      <button id="nextBtn">次の大問 →</button>
+      <span class="pill" id="countBadge"></span>
+      <span style="flex:1"></span>
+      <label class="toggle"><input type="checkbox" id="showBank" checked>使える語</label>
+      <label class="toggle"><input type="checkbox" id="showHint" checked>ヒント</label>
+      <label class="toggle"><input type="checkbox" id="numReset">番号を1から振る</label>
+      <input type="file" id="fileInput" accept=".json" />
+      <button id="checkBtn" class="primary">この大問を採点</button>
+      <button id="clearBtn">入力をクリア</button>
+      <button id="printBtn">印刷</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+    <section class="card">
+      <h2 id="titleArea">大問</h2>
+      <div class="muted" id="descArea"></div>
+      <ol id="questionList"></ol>
+    </section>
+
+    <aside class="card">
+      <h2>使える語（Word Bank）</h2>
+      <div id="bankArea" class="muted"></div>
+      <h2 style="margin-top:14px">ヒント</h2>
+      <div id="hintArea" class="muted"></div>
+      <div class="muted" style="margin-top:14px">
+        前後移動：←/→ ／ 採点：Ctrl/⌘ + Enter
+      </div>
+      <div class="muted" id="scoreArea" style="margin-top:10px"></div>
+    </aside>
+  </div>
+</main>
+
+<script>
+/** ===== データ仕様 ===== */
+const demoData = [
+  {
+    id: "D-001",
+    title: "Be動詞の基礎（自己紹介・職業・国籍）",
+    description: "72〜82：『使える語』から英文を作る。",
+    problems: [
+      {no:72, jp:"私はマリです。", note:"（3語で）", en:"I am Mari."},
+      {no:73, jp:"私はダンサーです。", note:"（4語で）", en:"I am a dancer."},
+      {no:74, jp:"私はおなかがすいています。", note:"（3語で）", en:"I am hungry."},
+      {no:75, jp:"あなたはとてもラッキーだ。", note:"（4語で）", en:"You are very lucky."},
+      {no:76, jp:"アントニオはイタリア人です。", note:"（3語で）", en:"Antonio is Italian."},
+      {no:77, jp:"彼は獣医です。", note:"（4語で）", en:"He is a vet."},
+      {no:78, jp:"ミアはスペイン人です。", note:"（3語で）", en:"Mia is Spanish."},
+      {no:79, jp:"彼女は警察官です。", note:"（5語で）", en:"She is a police officer."},
+      {no:80, jp:"それは赤いです。", note:"（3語で）", en:"It is red."},
+      {no:81, jp:"私たちはダンサーです。", note:"（3語で）", en:"We are dancers."},
+      {no:82, jp:"彼らは警察官です。", note:"（4語で）", en:"They are police officers."}
+    ],
+    wordBank: ["a","am","Antonio","are","dancer","dancers","he","hungry","I","is","it","Italian","lucky","Mari","Mia","officer","officers","police","red","she","Spanish","they","very","vet","we","you","."],
+    hints: [
+      "Antonio＝「アントニオ」",
+      "Italian＝「イタリア人」",
+      "lucky＝「ラッキーだ／運がいい」",
+      "Mia＝「ミア」",
+      "police officer＝「警察官」",
+      "red＝「赤い」",
+      "Spanish＝「スペイン人」",
+      "they＝「彼らは」",
+      "very＝「とても」",
+      "vet＝「獣医」",
+      "we＝「私たちは」"
+    ]
+  }
+];
+
+let data = demoData;
+let idx = 0;
+let answers = {}; // key: `${idx}-${i}`
+let judged  = {}; // 保存（将来集計用）
+let lastFocusedInput = null;
+
+const qs = {
+  prevBtn: document.getElementById('prevBtn'),
+  nextBtn: document.getElementById('nextBtn'),
+  daimonSelect: document.getElementById('daimonSelect'),
+  countBadge: document.getElementById('countBadge'),
+  titleArea: document.getElementById('titleArea'),
+  descArea: document.getElementById('descArea'),
+  questionList: document.getElementById('questionList'),
+  bankArea: document.getElementById('bankArea'),
+  hintArea: document.getElementById('hintArea'),
+  fileInput: document.getElementById('fileInput'),
+  showBank: document.getElementById('showBank'),
+  showHint: document.getElementById('showHint'),
+  numReset: document.getElementById('numReset'),
+  checkBtn: document.getElementById('checkBtn'),
+  clearBtn: document.getElementById('clearBtn'),
+  printBtn: document.getElementById('printBtn'),
+  scoreArea: document.getElementById('scoreArea')
+};
+
+function numFmt(n){ return String(n).padStart(2,'0'); }
+function keyFor(i){ return `${idx}-${i}`; }
+
+// ゆるめ照合（末尾ピリオド/句読点と前後スペースを正規化して一致させる）
+function normalize(s){
+  if(!s) return "";
+  let t = s.replace(/\u3000/g, " ").trim();      // 全角空白→半角 & 先頭末尾トリム
+  t = t.replace(/\s+([.,!?])/g, "$1");           // 句読点の直前スペースを削除（"word ."→"word."）
+  t = t.replace(/[.。!?]+$/,"").trim();          // 文末の句読点を削除 → もう一度トリム
+  t = t.replace(/\s+/g, " ");                    // 連続スペースを1つに
+  return t.toLowerCase();
+}
+
+function populateSelect(){
+  qs.daimonSelect.innerHTML = "";
+  data.forEach((d,i)=>{
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${numFmt(i+1)}. ${d.title}`;
+    qs.daimonSelect.appendChild(opt);
+  });
+  qs.daimonSelect.value = idx;
+  qs.countBadge.textContent = `全${data.length}大問`;
+}
+
+function render(){
+  const d = data[idx];
+  qs.titleArea.textContent = `${numFmt(idx+1)}. ${d.title}`;
+  qs.descArea.textContent = d.description || "";
+  qs.questionList.innerHTML = "";
+
+  const startNo = (qs.numReset.checked ? 1 : (d.problems[0]?.no || 1));
+  d.problems.forEach((p, i)=>{
+    const li = document.createElement('li');
+    li.className = 'qrow';
+
+    const jp = document.createElement('div');
+    jp.textContent = `${qs.numReset.checked ? (startNo + i) : p.no}. ${p.jp} ${p.note||""}`;
+    li.appendChild(jp);
+
+    const row = document.createElement('div');
+    row.className = 'answerBox';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'answer-input';
+    input.placeholder = '英作文を入力';
+    input.dataset.idx = String(i);
+
+    input.value = answers[keyFor(i)] || '';
+
+    input.addEventListener('keydown', (ev)=>{
+      if(ev.key === 'Enter' && !ev.ctrlKey && !ev.metaKey){
+        const next = li.nextElementSibling?.querySelector('.answer-input');
+        if(next){ next.focus(); next.select(); }
+      }
+      if((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter'){
+        doJudge();
+      }
+    });
+
+    input.addEventListener('focus', ()=> lastFocusedInput = input);
+
+    // 入力変化で判定や正解表示をリセット
+    input.addEventListener('input', ()=>{
+      answers[keyFor(i)] = input.value;
+      input.classList.remove('correct','incorrect');
+      judged[keyFor(i)] = undefined;
+      model.classList.add('hidden');
+    });
+
+    row.appendChild(input);
+    li.appendChild(row);
+
+    // 不正解時だけ出す正解欄（初期は隠す）
+    const model = document.createElement('div');
+    model.className = 'model hidden';
+    model.textContent = p.en;
+    li.appendChild(model);
+
+    qs.questionList.appendChild(li);
+  });
+
+  // Word Bank / Hints
+// Word Bank をトークンボタンとして描画
+  qs.bankArea.innerHTML = '';
+  (d.wordBank || []).forEach(w=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'token';
+    btn.textContent = w;
+    btn.dataset.token = w;
+    btn.addEventListener('click', ()=> insertAtCaret(lastFocusedInput, w));
+    qs.bankArea.appendChild(btn);
+  });
+
+  qs.hintArea.innerHTML = (d.hints||[]).map(x=>`• ${x}`).join('<br>');
+  // 使える語：タイトル(h2)と本文(#bankArea)のみ切替
+  const bankTitle = qs.bankArea.previousElementSibling;
+  [qs.bankArea, bankTitle].forEach(el => el.classList.toggle('hidden', !qs.showBank.checked));
+
+  // ヒント：タイトル(h2)と本文(#hintArea)のみ切替
+  const hintTitle = qs.hintArea.previousElementSibling;
+  [qs.hintArea, hintTitle].forEach(el => el.classList.toggle('hidden', !qs.showHint.checked));
+
+
+  // スコア表示初期化
+  qs.scoreArea.textContent = '';
+
+  populateSelect();
+}
+
+function insertAtCaret(inp, token){
+  if(!inp) return;
+  const s = inp.selectionStart ?? inp.value.length;
+  const e = inp.selectionEnd   ?? inp.value.length;
+  const v = inp.value;
+
+  let before = v.slice(0, s);
+  let after  = v.slice(e);
+
+  const isPunct = token === '.' || token === ',' || token === '?';
+
+  // ★ 追加：句読点を挿入するときだけ、直前の空白を除去してくっつける
+  if (isPunct) before = before.replace(/\s+$/,'');
+
+  // 単語の前：句読点以外は必要なら1スペース
+  const leftSpace  = (!isPunct && before && !before.endsWith(' ')) ? ' ' : '';
+
+  // 単語の後：常に次語のためにスペースを1つ（すでに after が空白で始まっていれば追加しない）
+  const rightSpace = (after.startsWith(' ')) ? '' : ' ';
+
+  const add = leftSpace + token + rightSpace;
+  inp.value = before + add + after;
+
+  const pos = (before + add).length;
+  inp.setSelectionRange(pos, pos);
+  inp.focus();
+  inp.dispatchEvent(new Event('input'));
+}
+
+function clamp(){ if(idx<0) idx=0; if(idx>=data.length) idx=data.length-1; }
+
+function doJudge(){
+  const d = data[idx];
+  let correct = 0; const total = d.problems.length;
+  d.problems.forEach((p,i)=>{
+    const key = keyFor(i);
+    const u = normalize(answers[key]||'');
+    const g = normalize(p.en||'');
+    const ok = (u.length>0) && (u===g);
+    judged[key] = ok ? 'correct' : 'incorrect';
+
+    const input = qs.questionList.querySelector(`.answer-input[data-idx="${i}"]`);
+    const model = input?.parentElement?.parentElement?.querySelector('.model');
+    if(input){
+      input.classList.remove('correct','incorrect');
+      input.classList.add(ok ? 'correct' : 'incorrect');
+    }
+    if(model){
+      if(ok){ model.classList.add('hidden'); }
+      else{ model.classList.remove('hidden'); model.textContent = p.en; }
+    }
+    if(ok) correct++;
+  });
+  const rate = Math.round((correct/total)*100);
+  qs.scoreArea.textContent = `この大問の得点：${correct} / ${total}（${rate}%）`;
+}
+
+function clearInputs(){
+  const d = data[idx];
+  d.problems.forEach((_,i)=>{ answers[keyFor(i)]=''; judged[keyFor(i)]=undefined; });
+  render();
+}
+
+qs.prevBtn.addEventListener('click', ()=>{ idx--; clamp(); render(); });
+qs.nextBtn.addEventListener('click', ()=>{ idx++; clamp(); render(); });
+qs.daimonSelect.addEventListener('change', e=>{ idx = parseInt(e.target.value||'0',10)||0; render(); });
+['showBank','showHint','numReset'].forEach(id=>{ qs[id].addEventListener('change', ()=> render()); });
+
+qs.fileInput.addEventListener('change', async (e)=>{
+  const file = e.target.files?.[0]; if(!file) return;
+  const text = await file.text();
+  try{
+    const parsed = JSON.parse(text);
+    if(!Array.isArray(parsed)) throw new Error('最上位は配列にしてください');
+    data = parsed; answers = {}; judged = {}; idx = 0; render();
+  }catch(err){ alert('JSONの読み込みに失敗しました：' + err.message); }
+  e.target.value = '';
+});
+
+qs.checkBtn.addEventListener('click', doJudge);
+qs.clearBtn.addEventListener('click', clearInputs);
+qs.printBtn.addEventListener('click', ()=> window.print());
+
+document.addEventListener('keydown', (ev)=>{
+  if(ev.key === 'ArrowLeft'){ qs.prevBtn.click(); }
+  if(ev.key === 'ArrowRight'){ qs.nextBtn.click(); }
+  if((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter'){ doJudge(); }
+});
+
+render();
+</script>
+</body>
+</html>
