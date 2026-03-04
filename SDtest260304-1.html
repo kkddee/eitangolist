@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>大問ビューア＋一括採点テスター（不正解のみ正解表示・Aキー無効）</title>
+<style>
+  :root{
+    --bg:#0b1220; --card:#111a2b; --text:#e6eef8; --muted:#b6c2d9; --accent:#4f8cff; --ok:#20c997; --ng:#ff6b6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif}
+  header{position:sticky;top:0;background:linear-gradient(180deg,#0b1220,#0b1220cc);backdrop-filter:saturate(1.1) blur(4px);z-index:10;border-bottom:1px solid #1b2740}
+  .wrap{max-width:1100px;margin:0 auto;padding:14px 16px}
+  h1{margin:0 0 8px;font-size:20px;font-weight:700}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  select,button,label,input[type=file]{background:#0f1a30;color:var(--text);border:1px solid #22345a;border-radius:10px;padding:10px 12px;font-size:14px}
+  button{cursor:pointer}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .toggle{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:#0f1a30;border:1px solid #22345a}
+  .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
+  @media(min-width:1000px){ .grid{grid-template-columns:1.2fr .8fr} }
+  .card{background:var(--card);border:1px solid #1b2740;border-radius:16px;padding:16px;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+  .card h2{margin:0 0 10px;font-size:16px;color:#cfe0ff}
+  .muted{color:var(--muted)}
+  ol{margin:0;padding-left:22px}
+  .qrow{margin:10px 0 18px}
+  .answerBox{margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .answer-input{flex:1;min-width:300px;background:#0f1a30;color:var(--text);border:1px solid #22345a;border-radius:10px;padding:12px 14px;font-size:16px}
+  .answer-input:disabled{opacity: .7;cursor: not-allowed;}
+  .pill{font-size:12px;border-radius:999px;padding:4px 10px;border:1px solid #22345a;background:#0f1a30;color:#9fb6e8}
+  .correct{border-color:var(--ok)!important; box-shadow:0 0 0 2px rgba(32,201,151,.25)}
+  .incorrect{border-color:var(--ng)!important; box-shadow:0 0 0 2px rgba(255,107,107,.25)}
+  .model{margin-top:6px;padding:8px 10px;border-radius:10px;background:#0f1a30;border:1px dashed #203258;color:#cfe0ff}
+  .hidden{display:none !important;}
+
+  /* Word Bank レイアウト（親は配置のみ担当） */
+  #bankArea{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  /* トークンは見た目を担当 */
+  .token{
+    font-size:18px;              /* 文字サイズをここで管理 */
+    padding:8px 14px;            /* 押しやすくする */
+    background:#0f1a30;
+    color:var(--text);
+    border:1px solid #22345a;
+    border-radius:999px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .token:active{ transform:scale(0.98); }
+
+
+  /* 小問リストの「1. 2. 3.」を一時的に非表示（通し番号だけ見せる） */
+  #questionList{ list-style: none; padding-left: 0; }
+  #questionList > li::marker{ content: ""; }
+
+
+  /* ===== UNITナビ ===== */
+  .unitNav{
+    margin-top:10px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .unitBtn{
+    background:#0f1a30;
+    color:var(--text);
+    border:1px solid #22345a;
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:13px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .unitBtn.active{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .unitBtn:active{ transform:scale(0.98); }
+
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>SD English Web版 <span class="pill">不正解のみ正解表示／Aキー無効</span></h1>
+    <div class="toolbar">
+      <button id="prevBtn">← 前の大問</button>
+      <select id="daimonSelect" title="大問を選択"></select>
+      <button id="nextBtn">次の大問 →</button>
+      <span class="pill" id="countBadge"></span>
+      <span style="flex:1"></span>
+      <label class="toggle"><input type="checkbox" id="showBank" checked>使える語</label>
+      <label class="toggle"><input type="checkbox" id="showHint" checked>ヒント</label>
+      <label class="toggle"><input type="checkbox" id="numReset">番号を1から振る</label>
+      <input type="file" id="fileInput" accept=".json" />
+      <button id="checkBtn" class="primary">この大問を採点</button>
+      <button id="clearBtn">入力をクリア</button>
+      <button id="printBtn">印刷</button>
+    </div>
+
+    <!-- ★ここに追加 -->
+    <div id="unitNav" class="unitNav"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+    <section class="card">
+      <h2 id="titleArea">大問</h2>
+      <div class="muted" id="descArea"></div>
+
+      <!-- ★追加：やり方 -->
+      <div class="muted" id="howtoArea" style="margin-top:6px;"></div>
+
+      <ol id="questionList"></ol>
+    </section>
+
+    <aside class="card">
+      <h2>使える語（Word Bank）</h2>
+      <div id="bankArea" class="muted"></div>
+      <h2 style="margin-top:14px">ヒント</h2>
+      <div id="hintArea" class="muted"></div>
+      <div class="muted" style="margin-top:14px">
+        前後移動：←/→ ／ 採点：Ctrl/⌘ + Enter
+      </div>
+      <div class="muted" id="scoreArea" style="margin-top:10px"></div>
+    </aside>
+  </div>
+</main>
+
+<script>
+/** ===== データ仕様 ===== */
+const demoData = 
+ [
+  {
+    "id": "U1-M-01",
+    "unit": 1,
+    "section": "本編",
+    "daimonNo": 1,
+    "title": "UNIT1 主語＋動詞＋～の文（一般動詞） 本編1",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "（やり方）［主語 ＋ 動詞 ＋ ～ .］の語順で、英文を作ります。",
+    "problems": [
+      {
+        "no": 1,
+        "jp": "私はテニスが好きです。",
+        "note": "（３語で）",
+        "en": "I like tennis."
+      },
+      {
+        "no": 2,
+        "jp": "私はテニスをします。〔やります。〕",
+        "note": "（３語で）",
+        "en": "I play tennis."
+      },
+      {
+        "no": 3,
+        "jp": "私は毎朝ヨーグルトを食べます。",
+        "note": "（___ every morning. ／___に３語）",
+        "en": "I eat yogurt"
+      }
+    ],
+    "wordBank": [
+      "eat",
+      "I",
+      "like",
+      "play",
+      "tennis",
+      "yogurt",
+      "."
+    ],
+    "hints": [
+      "eat「食べる」",
+      "every morning「毎朝」",
+      "like「好きだ／好む」",
+      "play「（球技やゲームを）する／プレイする」",
+      "yogurt「ヨーグルト」"
+    ]
+  },
+  {
+    "id": "U1-M-02",
+    "unit": 1,
+    "section": "本編",
+    "daimonNo": 2,
+    "title": "UNIT1 主語＋動詞＋～の文（一般動詞） 本編2",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "（やり方）［主語 ＋ 動詞 ＋ ～ .］の語順で、英文を作ります。",
+    "problems": [
+      {
+        "no": 4,
+        "jp": "彼らはフランス語を話します。",
+        "note": "（３語で）",
+        "en": "They speak French."
+      },
+      {
+        "no": 5,
+        "jp": "私たちは犬を（1匹）飼っています。",
+        "note": "（４語で）",
+        "en": "We have a dog."
+      }
+    ],
+    "wordBank": [
+      "a",
+      "dog",
+      "French",
+      "have",
+      "speak",
+      "they",
+      "we",
+      "."
+    ],
+    "hints": [
+      "a⇒〇〇ページ",
+      "French「フランス語」",
+      "have「持っている／「（ペットを）飼っている」",
+      "speak「話す」",
+      "they「彼らは」",
+      "we「私たちは」"
+    ]
+  },
+  {
+    "id": "U1-EX-01",
+    "unit": 1,
+    "section": "EXERCISE",
+    "daimonNo": 1,
+    "title": "UNIT1 主語＋動詞＋～の文（一般動詞） EXERCISE1",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      {
+        "no": 6,
+        "jp": "私は映画が好きです。",
+        "note": "（３語で）",
+        "en": "I like movies."
+      },
+      {
+        "no": 7,
+        "jp": "私は毎日朝食を食べます。",
+        "note": "（___ every day. ／eatを使わず、___に３語）",
+        "en": "I have breakfast"
+      },
+      {
+        "no": 8,
+        "jp": "私は自転車を２台持っています。",
+        "note": "（４語で）",
+        "en": "I have two bikes."
+      }
+    ],
+    "wordBank": [
+      "bikes",
+      "breakfast",
+      "day",
+      "every",
+      "have",
+      "I",
+      "like",
+      "movies",
+      "two",
+      "."
+    ],
+    "hints": [
+      "a⇒〇〇ページ",
+      "bike「自転車」",
+      "every day「毎日」",
+      "have「持っている」",
+      "movie「映画」",
+      "two「2つの」"
+    ]
+  },
+  {
+    "id": "U1-EX-02",
+    "unit": 1,
+    "section": "EXERCISE",
+    "daimonNo": 2,
+    "title": "UNIT1 主語＋動詞＋～の文（一般動詞） EXERCISE2",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      {
+        "no": 9,
+        "jp": "私は毎晩夕食を作ります。",
+        "note": "（___ every night. ／___に３語）",
+        "en": "I make dinner"
+      },
+      {
+        "no": 10,
+        "jp": "私はピアノをひきます。",
+        "note": "（４語で）",
+        "en": "I play the piano."
+      },
+      {
+        "no": 11,
+        "jp": "私はこのかばんが欲しい。",
+        "note": "（４語で）",
+        "en": "I want this bag."
+      }
+    ],
+    "wordBank": [
+      "bag",
+      "dinner",
+      "every",
+      "I",
+      "make",
+      "night",
+      "piano",
+      "play",
+      "the",
+      "this",
+      "want",
+      "."
+    ],
+    "hints": [
+      "bag「かばん」",
+      "dinner「夕食」",
+      "every night「毎晩」",
+      "make「作る」",
+      "piano「ピアノ」",
+      "the⇒〇〇ページ",
+      "want「欲しい」"
+    ]
+  },
+  {
+    "id": "U1-EX-03",
+    "unit": 1,
+    "section": "EXERCISE",
+    "daimonNo": 3,
+    "title": "UNIT1 主語＋動詞＋～の文（一般動詞） EXERCISE3",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      {
+        "no": 12,
+        "jp": "私は毎朝ミルクを飲みます。",
+        "note": "（___ every morning. ／___に３語）",
+        "en": "I drink milk"
+      },
+      {
+        "no": 13,
+        "jp": "私は毎晩テレビを見ます。",
+        "note": "（___ every night. ／___に３語）",
+        "en": "I watch TV"
+      },
+      {
+        "no": 14,
+        "jp": "私はあの男の人を知っています。",
+        "note": "（４語で）",
+        "en": "I know that man."
+      }
+    ],
+    "wordBank": [
+      "drink",
+      "every",
+      "I",
+      "know",
+      "man",
+      "milk",
+      "morning",
+      "night",
+      "that",
+      "TV",
+      "watch",
+      "."
+    ],
+    "hints": [
+      "drink「飲む」",
+      "every morning「毎朝」",
+      "every night「毎晩」",
+      "know「知っている」",
+      "man「男の人」",
+      "milk「ミルク」",
+      "that ～「あの～」⇒〇〇ページ",
+      "watch「見る／観る」"
+    ]
+  },
+  {
+    "id": "U1-EX-04",
+    "unit": 1,
+    "section": "EXERCISE",
+    "daimonNo": 4,
+    "title": "UNIT1 主語＋動詞＋～の文（一般動詞） EXERCISE4",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      {
+        "no": 15,
+        "jp": "私たちは毎週そこへ行きます。",
+        "note": "（___ every week. ／___に３語）",
+        "en": "We go there"
+      },
+      {
+        "no": 16,
+        "jp": "ケンと私はマンガが好きです。",
+        "note": "（５語で）",
+        "en": "Ken and I like manga."
+      },
+      {
+        "no": 17,
+        "jp": "彼らはネコを３匹飼っています。",
+        "note": "（４語で）",
+        "en": "They have three cats."
+      }
+    ],
+    "wordBank": [
+      "and",
+      "cats",
+      "go",
+      "have",
+      "I",
+      "Ken",
+      "like",
+      "manga",
+      "there",
+      "they",
+      "three",
+      "we",
+      "."
+    ],
+    "hints": [
+      "A and B「AとB」",
+      "every week「毎週」",
+      "have「持っている／「（ペットを）飼っている」",
+      "there「そこへ／そこに」",
+      "they「彼らは」",
+      "we「私たちは」"
+    ]
+  },
+  {
+    "id": "U2-EXAMPLE-01",
+    "unit": 2,
+    "section": "例題",
+    "daimonNo": 1,
+    "title": "UNIT2 一般動詞の否定文 例題1",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "（やり方）［主語 ＋ don’t / doesn’t / didn’t ＋ 動詞の原形 ＋ ～ .］ の語順",
+    "problems": [
+      { "no": 18, "jp": "私はテニスをしません。", "note": "（4語で）", "en": "I don't play tennis." },
+      { "no": 19, "jp": "ケンはテニスをしません。", "note": "（4語で）", "en": "Ken doesn't play tennis." },
+      { "no": 20, "jp": "私はテニスをしませんでした。", "note": "（4語で）", "en": "I didn't play tennis." }
+    ],
+    "wordBank": ["didn’t", "doesn’t", "don’t", "I", "Ken", "play", "tennis", "."],
+    "hints": []
+  },
+  {
+    "id": "U2-M-01",
+    "unit": 2,
+    "section": "本編",
+    "daimonNo": 1,
+    "title": "UNIT2 一般動詞の否定文 本編1",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "（やり方）［主語 ＋ don’t / doesn’t / didn’t ＋ 動詞の原形 ＋ ～ .］ の語順",
+    "problems": [
+      { "no": 21, "jp": "私はニンジンが好きではありません。", "note": "（４語で）", "en": "I don't like carrots." },
+      { "no": 22, "jp": "私はサッカーをしません。〔やりません。〕", "note": "（４語で）", "en": "I don't play soccer." },
+      { "no": 23, "jp": "私はトマトを食べません。", "note": "（４語で）", "en": "I don't eat tomatoes." },
+      { "no": 24, "jp": "私はコーヒーを飲みません。", "note": "（４語で）", "en": "I don't drink coffee." },
+      { "no": 25, "jp": "私はピアノを弾きません。", "note": "（５語で）", "en": "I don't play the piano." }
+    ],
+    "wordBank": ["carrots", "coffee", "don’t", "drink", "eat", "I", "like", "piano", "play", "soccer", "the", "tomatoes", "."],
+    "hints": [
+      "carrot「ニンジン」（carrotsは複数形）",
+      "coffee「コーヒー」",
+      "drink「飲む」",
+      "eat「食べる」",
+      "tomato「トマト」（tomatoesは複数形）"
+    ]
+  },
+  {
+    "id": "U2-M-02",
+    "unit": 2,
+    "section": "本編",
+    "daimonNo": 2,
+    "title": "UNIT2 一般動詞の否定文 本編2",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      { "no": 26, "jp": "私たちはあの男性を知りません。", "note": "（５語で）", "en": "We don't know that man." },
+      { "no": 27, "jp": "彼らは英語を話しません。", "note": "（４語で）", "en": "They don't speak English." },
+      { "no": 28, "jp": "リサとケンは野菜が好きではありません。", "note": "（６語で）", "en": "Lisa and Ken don't like vegetables." }
+    ],
+    "wordBank": ["and", "don’t", "English", "Ken", "know", "like", "Lisa", "man", "speak", "that", "they", "vegetables", "we", "."],
+    "hints": [
+      "A and B「A とB」",
+      "English「英語」",
+      "know「知っている」",
+      "man「男の人」",
+      "that ～「あの～」⇒〇〇ページ",
+      "speak「話す」",
+      "they「彼らは」",
+      "vegetables「野菜」",
+      "we「私たちは」"
+    ]
+  },
+  {
+    "id": "U2-M-03",
+    "unit": 2,
+    "section": "本編",
+    "daimonNo": 3,
+    "title": "UNIT2 一般動詞の否定文 本編3",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      { "no": 29, "jp": "ケンはコーヒーを飲みません。", "note": "（haveを使わず、４語で）", "en": "Ken doesn't drink coffee." },
+      { "no": 30, "jp": "リサは自転車を持っていません。", "note": "（５語で）", "en": "Lisa doesn't have a bike." },
+      { "no": 31, "jp": "彼はホラー映画が好きではありません。", "note": "（５語で）", "en": "He doesn't like horror movies." },
+      { "no": 32, "jp": "彼女はマンガを読みません。", "note": "（４語で）", "en": "She doesn't read manga." },
+      { "no": 33, "jp": "この犬は吠えません。", "note": "（４語で）", "en": "This dog doesn't bark." },
+      { "no": 34, "jp": "それは飛びません。", "note": "（３語で）", "en": "It doesn't fly." }
+    ],
+    "wordBank": ["a", "bark", "bike", "coffee", "doesn’t", "dog", "drink", "fly", "have", "he", "horror", "it", "Ken", "like", "Lisa", "manga", "movies", "read", "she", "this", "."],
+    "hints": [
+      "a⇒〇〇ページ",
+      "bark「吠える」",
+      "bike「自転車」",
+      "coffee「コーヒー」",
+      "drink「飲む」",
+      "fly「飛ぶ」",
+      "he「彼は」",
+      "horror movie「ホラー映画」",
+      "it「それは」",
+      "read「読む」",
+      "she「彼女は」",
+      "this ～「この～」⇒〇〇ページ"
+    ]
+  },
+  {
+    "id": "U2-M-04",
+    "unit": 2,
+    "section": "本編",
+    "daimonNo": 4,
+    "title": "UNIT2 一般動詞の否定文 本編4",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      { "no": 35, "jp": "私は英語を勉強しませんでした。", "note": "（４語で）", "en": "I didn't study English." },
+      { "no": 36, "jp": "私はお金を持っていませんでした。", "note": "（４語で）", "en": "I didn't have money." },
+      { "no": 37, "jp": "彼女は泣きませんでした。", "note": "（３語で）", "en": "She didn't cry." },
+      { "no": 38, "jp": "彼はピアノを弾きませんでした。", "note": "（５語で）", "en": "He didn't play the piano." },
+      { "no": 39, "jp": "ケンはここへ来ませんでした。", "note": "（４語で）", "en": "Ken didn't come here." },
+      { "no": 40, "jp": "私たちはリサに会いませんでした。", "note": "（meetを使わず、４語で）", "en": "We didn't see Lisa." },
+      { "no": 41, "jp": "彼らはその映画を見ませんでした。", "note": "（watchを使わず、５語で）", "en": "They didn't see the movie." }
+    ],
+    "wordBank": ["come", "cry", "didn’t", "English", "have", "he", "here", "I", "Ken", "Lisa", "money", "movie", "piano", "play", "see", "she", "study", "the", "they", "we", "."],
+    "hints": [
+      "come「来る」",
+      "cry「泣く」",
+      "have「持っている」",
+      "here「ここへ／ここに」",
+      "money「お金」",
+      "movie「映画」",
+      "see「見る／会う」",
+      "the「その」⇒",
+      "they「彼らは」",
+      "we「私たちは」"
+    ]
+  },
+  {
+    "id": "U2-EX-01",
+    "unit": 2,
+    "section": "EXERCISE",
+    "daimonNo": 1,
+    "title": "UNIT2 一般動詞の否定文 EXERCISE1",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      { "no": 42, "jp": "私はゴルフをしません。", "note": "（４語で）", "en": "I don't play golf." },
+      { "no": 43, "jp": "あなたはその男性を知りません。", "note": "（５語で）", "en": "You don't know the man." },
+      { "no": 44, "jp": "彼はワインを飲みません。", "note": "（４語で）", "en": "He doesn't drink wine." },
+      { "no": 45, "jp": "彼女は箸を使いません。", "note": "（４語で）", "en": "She doesn't use chopsticks." },
+      { "no": 46, "jp": "マイクは生魚を食べません。", "note": "（５語で）", "en": "Mike doesn't eat raw fish." },
+      { "no": 47, "jp": "それは動きません。", "note": "（３語で）", "en": "It doesn't move." },
+      { "no": 48, "jp": "私たちは生魚を食べません。", "note": "（５語で）", "en": "We don't eat raw fish." }
+    ],
+    "wordBank": ["chopsticks", "doesn’t", "don’t", "drink", "eat", "fish", "golf", "he", "I", "it", "know", "man", "Mike", "move", "play", "raw", "she", "the", "use", "we", "wine", "you", "."],
+    "hints": [
+      "chopsticks「箸」",
+      "golf「ゴルフ」",
+      "he「彼は」",
+      "it「それは」",
+      "know「知っている」",
+      "move「動く」",
+      "raw fish「生魚」",
+      "she「彼女は」",
+      "the「その」⇒",
+      "use「使う」",
+      "we「私たちは」",
+      "wine「ワイン」"
+    ]
+  },
+  {
+    "id": "U2-EX-02",
+    "unit": 2,
+    "section": "EXERCISE",
+    "daimonNo": 2,
+    "title": "UNIT2 一般動詞の否定文 EXERCISE2",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      { "no": 49, "jp": "私は納豆を食べません。", "note": "（４語で）", "en": "I don't eat natto." },
+      { "no": 50, "jp": "あなたは疲れているように見えません。", "note": "（４語で）", "en": "You don't look tired." },
+      { "no": 51, "jp": "彼はバスケットボールをしません。〔やりません。〕", "note": "（４語で）", "en": "He doesn't play basketball." },
+      { "no": 52, "jp": "彼女は犬を飼っていません。", "note": "（５語で）", "en": "She doesn't have a dog." },
+      { "no": 53, "jp": "サヤはスペイン語を話しません。", "note": "（４語で）", "en": "Saya doesn't speak Spanish." },
+      { "no": 54, "jp": "それは止まりません。", "note": "（３語で）", "en": "It doesn't stop." },
+      { "no": 55, "jp": "彼らはフランス語を話しません。", "note": "（４語で）", "en": "They don't speak French." }
+    ],
+    "wordBank": ["a", "basketball", "dog", "doesn’t", "don’t", "eat", "French", "have", "he", "I", "it", "look", "natto", "play", "Saya", "she", "Spanish", "speak", "stop", "they", "tired", "you", "."],
+    "hints": [
+      "French「フランス語」",
+      "have「飼っている」",
+      "he「彼は」",
+      "it「それは」",
+      "look ～「～に見える」",
+      "natto「納豆」",
+      "she「彼女は」",
+      "Spanish「スペイン語」",
+      "speak「話す」",
+      "stop「話す」",
+      "they「彼らは」",
+      "tired「疲れている」"
+    ]
+  },
+  {
+    "id": "U2-EX-03",
+    "unit": 2,
+    "section": "EXERCISE",
+    "daimonNo": 3,
+    "title": "UNIT2 一般動詞の否定文 EXERCISE3",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      { "no": 56, "jp": "私はこの色が好きではありません。", "note": "（５語で）", "en": "I don't like this color." },
+      { "no": 57, "jp": "私の兄〔弟〕はサッカーをしません。", "note": "（５語で）", "en": "My brother doesn't play soccer." },
+      { "no": 58, "jp": "私はこのシャツが欲しくありません。", "note": "（５語で）", "en": "I don't want this shirt." }
+    ],
+    "wordBank": ["brother", "color", "doesn’t", "don’t", "I", "like", "my", "play", "shirt", "soccer", "this", "want", "."],
+    "hints": [
+      "brother「兄〔または弟〕」",
+      "color「色」",
+      "shirt「シャツ」",
+      "this「この」⇒〇〇ページ",
+      "want「欲しい」"
+    ]
+  },
+  {
+    "id": "U2-EX-04",
+    "unit": 2,
+    "section": "EXERCISE",
+    "daimonNo": 4,
+    "title": "UNIT2 一般動詞の否定文 EXERCISE4",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      { "no": 59, "jp": "彼女は今京都に住んでいません。", "note": "（___ in Kyoto now. ／___に３語）", "en": "She doesn't live" },
+      { "no": 60, "jp": "彼らは肉を食べません。", "note": "（４語で）", "en": "They don't eat meat." },
+      { "no": 61, "jp": "私たちはお金が必要ではありません。", "note": "（４語で）", "en": "We don't need money." }
+    ],
+    "wordBank": ["doesn’t", "don’t", "eat", "live", "meat", "money", "need", "she", "they", "we", "."],
+    "hints": [
+      "in ～「～に」⇒",
+      "live「住んでいる／住む」",
+      "meat「肉」",
+      "money「お金」",
+      "need「必要である」",
+      "now「今」",
+      "they「彼らは」",
+      "we「私たちは」"
+    ]
+  },
+  {
+    "id": "U2-EX-05",
+    "unit": 2,
+    "section": "EXERCISE",
+    "daimonNo": 5,
+    "title": "UNIT2 一般動詞の否定文 EXERCISE5",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      { "no": 62, "jp": "彼は朝食を食べません。", "note": "（haveを使わず、４語で）", "en": "He doesn't eat breakfast." },
+      { "no": 63, "jp": "私は料理をしません。", "note": "（３語で）", "en": "I don't cook." },
+      { "no": 64, "jp": "彼らはケンを知りません。〔知り合いではありません。〕", "note": "（４語で）", "en": "They don't know Ken." }
+    ],
+    "wordBank": ["breakfast", "cook", "doesn’t", "don’t", "eat", "he", "I", "Ken", "know", "they", "."],
+    "hints": [
+      "breakfast「朝食」",
+      "cook「料理をする」",
+      "know「知っている」",
+      "they「彼らは」"
+    ]
+  },
+  {
+    "id": "U2-EX-06",
+    "unit": 2,
+    "section": "EXERCISE",
+    "daimonNo": 6,
+    "title": "UNIT2 一般動詞の否定文 EXERCISE6",
+    "description": "［使える語］にある単語を使って、英語にしましょう。",
+    "howto": "",
+    "problems": [
+      { "no": 65, "jp": "私は昨日テニスをしなかった。", "note": "（___ yesterday. ／___に４語）", "en": "I didn't play tennis" },
+      { "no": 66, "jp": "彼女はこの質問に答えなかった。", "note": "（５語で）", "en": "She didn't answer this question." },
+      { "no": 67, "jp": "彼らはそこへ行かなかった。", "note": "（４語で）", "en": "They didn't go there." }
+    ],
+    "wordBank": ["answer", "didn’t", "go", "I", "play", "question", "she", "tennis", "there", "they", "this", "."],
+    "hints": [
+      "answer「答える」",
+      "question「質問」",
+      "she「彼女は」",
+      "there「そこへ／そこに」",
+      "they「彼らは」⇒〇〇ページ",
+      "this「この」⇒"
+    ]
+  }
+]
+
+let data = demoData;
+let idx = 0;
+let answers = {}; // key: `${idx}-${i}`
+let judged  = {}; // 保存（将来集計用）
+let lastFocusedInput = null;
+
+let unitFilter = null;         // null = 全UNIT表示
+let viewIndices = [];          // 表示対象の data index 一覧
+let viewPos = 0;               // viewIndices 内の位置
+
+const qs = {
+  prevBtn: document.getElementById('prevBtn'),
+  nextBtn: document.getElementById('nextBtn'),
+  daimonSelect: document.getElementById('daimonSelect'),
+  countBadge: document.getElementById('countBadge'),
+  titleArea: document.getElementById('titleArea'),
+  descArea: document.getElementById('descArea'),
+  howtoArea: document.getElementById('howtoArea'),
+  questionList: document.getElementById('questionList'),
+  bankArea: document.getElementById('bankArea'),
+  hintArea: document.getElementById('hintArea'),
+  fileInput: document.getElementById('fileInput'),
+  showBank: document.getElementById('showBank'),
+  showHint: document.getElementById('showHint'),
+  numReset: document.getElementById('numReset'),
+  checkBtn: document.getElementById('checkBtn'),
+  clearBtn: document.getElementById('clearBtn'),
+  printBtn: document.getElementById('printBtn'),
+  scoreArea: document.getElementById('scoreArea'),
+  unitNav: document.getElementById('unitNav')
+};
+
+function numFmt(n){ return String(n).padStart(2,'0'); }
+function keyFor(i){ return `${idx}-${i}`; }
+
+// ゆるめ照合（末尾ピリオド/句読点と前後スペースを正規化して一致させる）
+function normalize(s){
+  if(!s) return "";
+  let t = s.replace(/\u3000/g, " ").trim();      // 全角空白→半角 & 先頭末尾トリム
+  t = t.replace(/[’]/g, "'");                 // ★ここを追加
+  t = t.replace(/\s+([.,!?])/g, "$1");           // 句読点の直前スペースを削除（"word ."→"word."）
+  t = t.replace(/[.。!?]+$/,"").trim();          // 文末の句読点を削除 → もう一度トリム
+  t = t.replace(/\s+/g, " ");                    // 連続スペースを1つに
+  return t.toLowerCase();
+}
+
+function populateSelect(){
+  qs.daimonSelect.innerHTML = "";
+
+  // 表示対象が未構築なら作る
+  if(!viewIndices || viewIndices.length===0) rebuildView();
+
+  viewIndices.forEach((realIdx)=>{
+    const d = data[realIdx];
+    const opt = document.createElement('option');
+    opt.value = realIdx;                 // ★実データのidxを入れる
+    opt.textContent = d.title;           // 先に 01. を消した仕様のまま
+    qs.daimonSelect.appendChild(opt);
+  });
+
+  qs.daimonSelect.value = idx;
+  qs.countBadge.textContent = `全${viewIndices.length}大問`; // フィルタ後の件数
+}
+
+function rebuildView(){
+  // unitFilter が null なら全件
+  viewIndices = data
+    .map((d,i)=>({d,i}))
+    .filter(x => unitFilter==null ? true : (String(x.d.unit||"") === String(unitFilter)))
+    .map(x => x.i);
+
+  if(viewIndices.length === 0){
+    // フィルタで0件になったら全件に戻す
+    unitFilter = null;
+    viewIndices = data.map((_,i)=>i);
+  }
+
+  // 現在 idx が view 内にあればその位置へ、なければ先頭
+  const p = viewIndices.indexOf(idx);
+  viewPos = (p >= 0) ? p : 0;
+  idx = viewIndices[viewPos];
+}
+
+function buildUnitNav(){
+  const units = Array.from(new Set(
+    data.map(d => d.unit).filter(u => u !== undefined && u !== null && u !== "")
+  ));
+
+  // 数字っぽいなら昇順
+  units.sort((a,b)=>{
+    const na = Number(a), nb = Number(b);
+    if(!Number.isNaN(na) && !Number.isNaN(nb)) return na-nb;
+    return String(a).localeCompare(String(b));
+  });
+
+  qs.unitNav.innerHTML = "";
+
+  // ALL
+  const allBtn = document.createElement('button');
+  allBtn.type = 'button';
+  allBtn.className = 'unitBtn' + (unitFilter==null ? ' active' : '');
+  allBtn.textContent = 'ALL';
+  allBtn.addEventListener('click', ()=>{
+    unitFilter = null;
+    rebuildView();
+    populateSelect(); // プルダウン更新
+    render();         // 画面更新
+  });
+  qs.unitNav.appendChild(allBtn);
+
+  units.forEach(u=>{
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'unitBtn' + (String(unitFilter)===String(u) ? ' active' : '');
+    b.textContent = `UNIT${u}`;
+    b.addEventListener('click', ()=>{
+      unitFilter = u;
+      rebuildView();
+      populateSelect();
+      render();
+    });
+    qs.unitNav.appendChild(b);
+  });
+}
+
+function render(){
+  rebuildView();
+  const d = data[idx];
+  qs.titleArea.textContent = d.title;
+  qs.descArea.textContent = d.description || "";
+  qs.howtoArea.textContent = d.howto || "";
+  qs.howtoArea.classList.toggle('hidden', !(d.howto && d.howto.trim()));
+  qs.questionList.innerHTML = "";
+
+  const startNo = (qs.numReset.checked ? 1 : (d.problems[0]?.no || 1));
+  d.problems.forEach((p, i)=>{
+    const li = document.createElement('li');
+    li.className = 'qrow';
+
+    const jp = document.createElement('div');
+    jp.textContent = `${qs.numReset.checked ? (startNo + i) : p.no}. ${p.jp} ${p.note||""}`;
+    li.appendChild(jp);
+
+    const row = document.createElement('div');
+    row.className = 'answerBox';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'answer-input';
+    input.placeholder = '英作文を入力';
+    input.dataset.idx = String(i);
+
+    input.value = answers[keyFor(i)] || '';
+
+    input.disabled = false; // ★大問表示時は常に編集可にする
+
+    input.addEventListener('keydown', (ev)=>{
+      if(ev.key === 'Enter' && !ev.ctrlKey && !ev.metaKey){
+        const next = li.nextElementSibling?.querySelector('.answer-input');
+        if(next){ next.focus(); next.select(); }
+      }
+      if((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter'){
+        doJudge();
+      }
+    });
+
+    input.addEventListener('focus', ()=> lastFocusedInput = input);
+
+    // 入力変化で判定や正解表示をリセット
+    input.addEventListener('input', ()=>{
+      answers[keyFor(i)] = input.value;
+      input.classList.remove('correct','incorrect');
+      judged[keyFor(i)] = undefined;
+      model.classList.add('hidden');
+    });
+
+    row.appendChild(input);
+    li.appendChild(row);
+
+    // 不正解時だけ出す正解欄（初期は隠す）
+    const model = document.createElement('div');
+    model.className = 'model hidden';
+    model.textContent = p.en;
+    li.appendChild(model);
+
+    qs.questionList.appendChild(li);
+  });
+
+  // Word Bank / Hints
+// Word Bank をトークンボタンとして描画
+  qs.bankArea.innerHTML = '';
+  (d.wordBank || []).forEach(w=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'token';
+    btn.textContent = w;
+    btn.dataset.token = w;
+    btn.addEventListener('click', ()=> insertAtCaret(lastFocusedInput, w));
+    qs.bankArea.appendChild(btn);
+  });
+
+  qs.hintArea.innerHTML = (d.hints||[]).map(x=>`• ${x}`).join('<br>');
+  // 使える語：タイトル(h2)と本文(#bankArea)のみ切替
+  const bankTitle = qs.bankArea.previousElementSibling;
+  [qs.bankArea, bankTitle].forEach(el => el.classList.toggle('hidden', !qs.showBank.checked));
+
+  // ヒント：タイトル(h2)と本文(#hintArea)のみ切替
+  const hintTitle = qs.hintArea.previousElementSibling;
+  [qs.hintArea, hintTitle].forEach(el => el.classList.toggle('hidden', !qs.showHint.checked));
+
+
+  // スコア表示初期化
+  qs.scoreArea.textContent = '';
+
+  buildUnitNav();
+  populateSelect();
+}
+
+function insertAtCaret(inp, token){
+  if(!inp) return;
+  const s = inp.selectionStart ?? inp.value.length;
+  const e = inp.selectionEnd   ?? inp.value.length;
+  const v = inp.value;
+
+  let before = v.slice(0, s);
+  let after  = v.slice(e);
+
+  const isPunct = token === '.' || token === ',' || token === '?';
+
+  // ★ 追加：1語目なら先頭を大文字にする
+  const isFirstWord = !inp.value.trim();
+  if (isFirstWord && /^[a-z]/.test(token)) {
+    token = token.charAt(0).toUpperCase() + token.slice(1);
+  }
+
+  // ★ 追加：句読点を挿入するときだけ、直前の空白を除去してくっつける
+  if (isPunct) before = before.replace(/\s+$/,'');
+
+  // 単語の前：句読点以外は必要なら1スペース
+  const leftSpace  = (!isPunct && before && !before.endsWith(' ')) ? ' ' : '';
+
+  // 単語の後：常に次語のためにスペースを1つ（すでに after が空白で始まっていれば追加しない）
+  const rightSpace = (after.startsWith(' ')) ? '' : ' ';
+
+  const add = leftSpace + token + rightSpace;
+  inp.value = before + add + after;
+
+  const pos = (before + add).length;
+  inp.setSelectionRange(pos, pos);
+  inp.focus();
+  inp.dispatchEvent(new Event('input'));
+}
+
+function clamp(){ if(idx<0) idx=0; if(idx>=data.length) idx=data.length-1; }
+
+function doJudge(){
+  const d = data[idx];
+  let correct = 0; const total = d.problems.length;
+  d.problems.forEach((p,i)=>{
+    const key = keyFor(i);
+    const u = normalize(answers[key]||'');
+    const g = normalize(p.en||'');
+    const ok = (u.length>0) && (u===g);
+    judged[key] = ok ? 'correct' : 'incorrect';
+
+    const input = qs.questionList.querySelector(`.answer-input[data-idx="${i}"]`);
+    const model = input?.parentElement?.parentElement?.querySelector('.model');
+    if(input){
+      input.classList.remove('correct','incorrect');
+      input.classList.add(ok ? 'correct' : 'incorrect');
+    }
+    if(model){
+      if(ok){ model.classList.add('hidden'); }
+      else{ model.classList.remove('hidden'); model.textContent = p.en; }
+    }
+    if(ok) correct++;
+  });
+  const rate = Math.round((correct/total)*100);
+  qs.scoreArea.textContent = `この大問の得点：${correct} / ${total}（${rate}%）`;
+
+　// ★採点後：入力欄をロック
+  qs.questionList.querySelectorAll('.answer-input').forEach(inp=>{
+    inp.disabled = true;
+  });
+}
+
+function clearInputs(){
+  const d = data[idx];
+  d.problems.forEach((_,i)=>{ answers[keyFor(i)]=''; judged[keyFor(i)]=undefined; });
+  render();
+}
+
+qs.prevBtn.addEventListener('click', ()=>{
+  if(!viewIndices || viewIndices.length===0) rebuildView();
+  viewPos = Math.max(0, viewPos - 1);
+  idx = viewIndices[viewPos];
+  render();
+});
+
+qs.nextBtn.addEventListener('click', ()=>{
+  if(!viewIndices || viewIndices.length===0) rebuildView();
+  viewPos = Math.min(viewIndices.length - 1, viewPos + 1);
+  idx = viewIndices[viewPos];
+  render();
+});
+
+qs.daimonSelect.addEventListener('change', e=>{
+  idx = parseInt(e.target.value||'0',10)||0;
+  if(!viewIndices || viewIndices.length===0) rebuildView();
+  viewPos = viewIndices.indexOf(idx);
+  if(viewPos < 0) viewPos = 0;
+  render();
+});
+
+['showBank','showHint','numReset'].forEach(id=>{ qs[id].addEventListener('change', ()=> render()); });
+
+qs.fileInput.addEventListener('change', async (e)=>{
+  const file = e.target.files?.[0]; if(!file) return;
+  const text = await file.text();
+  try{
+    const parsed = JSON.parse(text);
+    if(!Array.isArray(parsed)) throw new Error('最上位は配列にしてください');
+    data = parsed; answers = {}; judged = {}; idx = 0; render();
+  }catch(err){ alert('JSONの読み込みに失敗しました：' + err.message); }
+  e.target.value = '';
+});
+
+qs.checkBtn.addEventListener('click', doJudge);
+qs.clearBtn.addEventListener('click', clearInputs);
+qs.printBtn.addEventListener('click', ()=> window.print());
+
+document.addEventListener('keydown', (ev)=>{
+  if(ev.key === 'ArrowLeft'){ qs.prevBtn.click(); }
+  if(ev.key === 'ArrowRight'){ qs.nextBtn.click(); }
+  if((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter'){ doJudge(); }
+});
+
+render();
+</script>
+</body>
+</html>
