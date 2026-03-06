@@ -40,14 +40,14 @@
     background:rgba(255,255,255,.94);
     backdrop-filter:blur(8px);
     border-bottom:1px solid var(--border);
-    padding:14px 14px 12px;
+    padding:12px 14px 10px;
     box-shadow:0 2px 10px rgba(0,0,0,.04);
   }
 
   h1{
     font-size:1.7em;
-    line-height:1.35;
-    margin:.15em 0 .55em;
+    line-height:1.3;
+    margin:.1em 0 .45em;
     color:#22577a;
   }
 
@@ -107,15 +107,9 @@
   }
 
   main{
-    padding: 170px 12px 90px;
-    max-width: 980px;
-    margin: 0 auto;
-  }
-
-  @media (max-width: 600px){
-    main{
-      padding: 170px 12px 72px;
-    }
+    padding:108px 12px 28px;
+    max-width:980px;
+    margin:0 auto;
   }
 
   .item{
@@ -178,13 +172,11 @@
   }
 
   footer{
-    position:sticky;
-    bottom:0;
+    position:static;
     background:rgba(255,255,255,.95);
     border-top:1px solid var(--border);
     color:var(--muted);
     padding:10px 12px;
-    backdrop-filter:blur(6px);
   }
 
   .warn{
@@ -195,21 +187,49 @@
   }
 
   @media (max-width: 600px){
-    h1{font-size:1.45em}
-    #q{width:100%; max-width:none}
-    #copyBtn{width:100%}
-    .item{padding:14px}
-    .w{font-size:1.05rem}
-    .speak{width:54px; height:54px; font-size:1.2rem}
+    header{
+      padding:10px 12px 8px;
+    }
+
+    h1{
+      font-size:1.45em;
+      margin:.08em 0 .3em;
+    }
+
+    .toolbar{
+      gap:8px;
+    }
+
+    #q{
+      width:100%;
+      max-width:none;
+    }
+
+    main{
+      padding:126px 12px 20px;
+    }
+
+    footer{
+      padding:10px 12px 14px;
+    }
+
+    .speak{
+      width:54px;
+      height:54px;
+      font-size:1.2rem;
+    }
+
+    .w{
+      font-size:1.05rem;
+    }
   }
 </style>
 </head>
 <body>
   <header>
-    <h1>英単語をさがそう！<small>聞いて・さがして・おぼえよう</small></h1>
+    <h1>英単語をさがそう！</h1>
     <div class="toolbar">
       <input id="q" type="search" placeholder="はじめの文字でさがそう（例: de）">
-      <button id="copyBtn">見えている単語をコピー</button>
       <span id="count">合計 2617 語</span>
       <span id="ttsWarn" class="warn" hidden>音声合成が使えない環境です</span>
     </div>
@@ -2841,7 +2861,6 @@
     const q = document.getElementById('q');
     const items = Array.from(document.querySelectorAll('.item'));
     const count = document.getElementById('count');
-    const copyBtn = document.getElementById('copyBtn');
 
     function filter() {
       const v = (q.value || '').trim().toLowerCase();
@@ -2856,19 +2875,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     q.addEventListener('input', filter);
-
-    copyBtn.addEventListener('click', async () => {
-      const visible = items
-        .filter(el => el.style.display !== 'none')
-        .map(el => el.querySelector('.w').textContent);
-
-      try {
-        await navigator.clipboard.writeText(visible.join('\n'));
-        alert('表示中の単語をコピーしました');
-      } catch (e) {
-        alert('コピーに失敗しました');
-      }
-    });
 
     // ====== 発音（Web Speech API） ======
     const warn = document.getElementById('ttsWarn');
